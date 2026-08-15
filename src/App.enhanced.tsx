@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { Navigation } from './components/Navigation';
 import { FloatingMusicPlayer } from './components/FloatingMusicPlayer';
 import { AdvancedAuroraBackground } from './components/AdvancedAuroraBackground';
+import { AccessibilityHints } from './components/AccessibilityHints';
+import { LoadingState } from './components/LoadingState';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 import { useScrollSpy } from './hooks/useScrollSpy';
 import { personalInfo, skills, socialLinks, guitarJourney, hobbies } from './data/content';
@@ -13,6 +15,7 @@ import type { Section } from './types';
 function App() {
   const sections: Section[] = ['hero', 'about', 'build', 'projects', 'music', 'explore', 'connect'];
   const [currentSection, setCurrentSection] = useState<Section>('hero');
+  const [isLoading, setIsLoading] = useState(true);
 
   // Auto-detect current section on scroll
   const activeSection = useScrollSpy({ sections });
@@ -21,6 +24,15 @@ function App() {
   useEffect(() => {
     setCurrentSection(activeSection);
   }, [activeSection]);
+
+  // Simulate loading time
+  useEffect(() => {
+    const loadingTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(loadingTimer);
+  }, []);
 
   // Animation hooks for each section
   const heroAnimation = useScrollAnimation({ threshold: 0.3, triggerOnce: true });
@@ -33,6 +45,12 @@ function App() {
 
   return (
     <div className="relative min-h-screen bg-midnight">
+      {/* Loading State */}
+      {isLoading && <LoadingState />}
+
+      {/* Accessibility hints */}
+      <AccessibilityHints />
+
       {/* Advanced Background with aurora and snow */}
       <AdvancedAuroraBackground />
 
@@ -45,49 +63,47 @@ function App() {
       </div>
 
       {/* Main Content - z-index 20 (above background and snow) */}
-      <main className="relative z-20">
+      <main className="relative z-20" role="main" aria-label="Main content">
         {/* Hero Section */}
-        <section id="section-hero" ref={heroAnimation.ref} className="min-h-screen flex items-center justify-center px-6 py-20">
+        <section id="section-hero" ref={heroAnimation.ref} className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-20" aria-labelledby="hero-heading">
           <div className="max-w-7xl mx-auto w-full">
-            <div className="relative flex items-center justify-between gap-16 lg:gap-24">
-              {/* Text Content - Left Side */}
-              <div className="flex-1 max-w-xl">
-                <h1 className={`text-hero font-bold text-gradient text-glow mb-6 transition-all duration-1000 ${
+            <div className="relative flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16 xl:gap-24">
+              {/* Text Content - Top on mobile, Left on desktop */}
+              <div className="flex-1 max-w-xl w-full lg:order-1 order-2 text-center lg:text-left">
+                <h1 id="hero-heading" className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gradient text-glow mb-4 sm:mb-6 transition-all duration-1000 ${
                   heroAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
                 }`}>
                   {personalInfo.name}
                 </h1>
 
-                <p className={`text-subtitle text-sky-blue mb-4 transition-all duration-1000 delay-200 ${
+                <p className={`text-xl sm:text-2xl md:text-subtitle text-sky-blue mb-3 sm:mb-4 transition-all duration-1000 delay-200 ${
                   heroAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                 }`}>
                   {personalInfo.tagline}
                 </p>
 
-                <p className={`text-lg text-muted-blue max-w-md transition-all duration-1000 delay-300 ${
+                <p className={`text-base sm:text-lg lg:text-xl text-gray-300 max-w-md mx-auto lg:mx-0 transition-all duration-1000 delay-300 ${
                   heroAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
                 }`}>
                   {personalInfo.taglineExtended}
                 </p>
 
-                {/* Scroll indicator */}
-                <div className={`absolute -bottom-24 left-0 transition-all duration-1000 delay-700 ${
+                {/* Scroll indicator - Hidden on mobile */}
+                <div className={`absolute -bottom-24 left-0 hidden lg:flex items-center gap-3 text-gray-400/60 text-sm transition-all duration-1000 delay-700 ${
                   heroAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}>
-                  <div className="flex items-center gap-3 text-muted-blue/60 text-sm">
-                    <span>Scroll to enter</span>
-                    <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                    </svg>
-                  </div>
+                  <span>Scroll to explore</span>
+                  <svg className="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
                 </div>
               </div>
 
-              {/* Avatar Container - Right Side */}
-              <div className={`flex-1 flex justify-center items-center transition-all duration-1000 delay-500 relative z-30 ${
+              {/* Avatar Container - Top on mobile, Right on desktop */}
+              <div className={`flex-1 flex justify-center items-center transition-all duration-1000 delay-300 relative z-30 lg:order-2 order-1 ${
                 heroAnimation.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
               }`}>
-                <div className="relative w-[450px] h-[450px] lg:w-[500px] lg:h-[500px]">
+                <div className="relative w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] md:w-[350px] md:h-[350px] lg:w-[400px] lg:h-[400px] xl:w-[500px] xl:h-[500px]">
                   {/* Enhanced glow effect */}
                   <div className="absolute inset-0 bg-aurora/30 rounded-full blur-3xl animate-pulse-soft" />
                   <div className="absolute inset-0 bg-gradient-radial from-aurora/40 via-transparent to-transparent rounded-full" />
@@ -96,7 +112,7 @@ function App() {
                   <div className="relative w-full h-full rounded-full overflow-hidden aurora-glow border-2 border-aurora/40 shadow-2xl z-10">
                     <img
                       src="/assets/avatar.jpg"
-                      alt="Nguyễn Voi Anh Phi - Guitarist & Developer"
+                      alt="Professional portrait photo of Nguyễn Voi Anh Phi, guitarist and web developer"
                       className="w-full h-full object-cover scale-110 hover:scale-100 transition-transform duration-700"
                       loading="eager"
                     />
@@ -169,8 +185,8 @@ function App() {
                     </h4>
                     <div className="text-center space-y-2">
                       <p className="text-sm font-medium text-soft-white">{personalInfo.education.field}</p>
-                      <p className="text-xs text-muted-blue">{personalInfo.education.institution}</p>
-                      <p className="text-xs text-muted-blue/70 mt-2">{personalInfo.education.period}</p>
+                      <p className="text-xs text-gray-300">{personalInfo.education.institution}</p>
+                      <p className="text-xs text-gray-400 mt-2">{personalInfo.education.period}</p>
                       <p className="text-xs text-emerald-400 mt-2">{personalInfo.education.status}</p>
                     </div>
                   </a>
@@ -190,9 +206,9 @@ function App() {
                     </h4>
                     <div className="text-center space-y-2">
                       <p className="text-sm font-medium text-soft-white">{personalInfo.english.field}</p>
-                      <p className="text-xs text-muted-blue">{personalInfo.english.institution}</p>
+                      <p className="text-xs text-gray-300">{personalInfo.english.institution}</p>
                       <p className="text-xs text-aurora font-semibold mt-2">{personalInfo.english.level}</p>
-                      <p className="text-xs text-muted-blue/70">{personalInfo.english.period}</p>
+                      <p className="text-xs text-gray-400">{personalInfo.english.period}</p>
                     </div>
                   </a>
 
@@ -211,9 +227,9 @@ function App() {
                     </h4>
                     <div className="text-center space-y-2">
                       <p className="text-sm font-medium text-soft-white">{personalInfo.guitar.field}</p>
-                      <p className="text-xs text-muted-blue">{personalInfo.guitar.institution}</p>
+                      <p className="text-xs text-gray-300">{personalInfo.guitar.institution}</p>
                       <p className="text-xs text-purple-400 font-semibold mt-2">{personalInfo.guitar.level}</p>
-                      <p className="text-xs text-muted-blue/70">{personalInfo.guitar.period}</p>
+                      <p className="text-xs text-gray-400">{personalInfo.guitar.period}</p>
                     </div>
                   </a>
                 </div>
@@ -227,7 +243,7 @@ function App() {
                   "Programming is my career direction. Music is a major part of my identity.
                   Together, they represent who I am."
                 </blockquote>
-                <p className="mt-4 text-muted-blue text-sm">— Nguyễn "Voi" Anh Phi</p>
+                <p className="mt-4 text-gray-400 text-sm">— Nguyễn "Voi" Anh Phi</p>
               </div>
             </div>
           </div>
@@ -243,7 +259,7 @@ function App() {
               }`}>
                 BUILDING WITH CODE
               </h2>
-              <p className={`text-xl text-muted-blue max-w-2xl mx-auto transition-all duration-1000 delay-200 ${
+              <p className={`text-xl text-gray-300 max-w-2xl mx-auto transition-all duration-1000 delay-200 ${
                 buildAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}>
                 Currently exploring software development and building technical foundations.
@@ -309,7 +325,7 @@ function App() {
               }`}>
                 THINGS I'VE BUILT
               </h2>
-              <p className={`text-xl text-muted-blue max-w-2xl mx-auto transition-all duration-1000 delay-200 ${
+              <p className={`text-xl text-gray-300 max-w-2xl mx-auto transition-all duration-1000 delay-200 ${
                 projectsAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}>
                 Projects, experiments, and things I'm learning through.
@@ -406,7 +422,7 @@ function App() {
               }`}>
                 PLAY
               </h2>
-              <p className={`text-xl text-muted-blue max-w-2xl mx-auto transition-all duration-1000 delay-200 ${
+              <p className={`text-xl text-gray-300 max-w-2xl mx-auto transition-all duration-1000 delay-200 ${
                 musicAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}>
                 Music is not just a hobby. It's one of the main creative sides of my identity.
@@ -482,7 +498,7 @@ function App() {
                 <div className="text-6xl mb-6">🎸</div>
                 <h3 className="text-4xl font-bold text-gradient mb-6">GUITAR JOURNEY</h3>
                 <p className="text-2xl text-sky-blue font-semibold mb-3">{guitarJourney.duration}</p>
-                <p className="text-muted-blue italic">Still learning, still improving.</p>
+                <p className="text-gray-400 italic">Still learning, still improving.</p>
               </div>
 
               {/* Timeline */}
@@ -528,7 +544,7 @@ function App() {
               }`}>
                 EXPLORE
               </h2>
-              <p className={`text-xl text-muted-blue max-w-2xl mx-auto transition-all duration-1000 delay-200 ${
+              <p className={`text-xl text-gray-300 max-w-2xl mx-auto transition-all duration-1000 delay-200 ${
                 exploreAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               }`}>
                 Beyond programming. The things that make me who I am.
