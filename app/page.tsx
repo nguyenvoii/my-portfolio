@@ -14,12 +14,11 @@ import Footer from './components/Footer';
 
 export default function PortfolioPage() {
   useEffect(() => {
-    // Page load animation
     gsap.from('body', { opacity: 0, duration: 0.5 });
   }, []);
 
   return (
-    <main className="bg-background text-text-primary">
+    <main className="min-h-screen">
       <Navigation />
       <Hero />
       <About />

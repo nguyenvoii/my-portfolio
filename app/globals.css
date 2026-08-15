@@ -1,66 +1,81 @@
 @import "tailwindcss";
 
-/* === PREMIUM PORTFOLIO - COLOR SYSTEM === */
-
 :root {
-  /* Base - Dark Cinematic */
   --background: #0a0a0a;
   --surface: #111111;
   --surface-elevated: #1a1a1a;
-
-  /* Typography - Off-white */
   --text-primary: #f5f5f5;
   --text-secondary: #a0a0a0;
   --text-tertiary: #6b6b6b;
-
-  /* Accent - Electric Blue (restrained, single accent) */
   --accent: #3b82f6;
   --accent-hover: #2563eb;
-  --accent-subtle: rgba(59, 130, 246, 0.1);
 }
 
-/* === REDUCED MOTION === */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #0a0a0a;
+  color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero-title {
+  font-size: clamp(3rem, 10vw, 8rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.section-heading {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.body-text {
+  font-size: clamp(1rem, 1.5vw, 1.125rem);
+  line-height: 1.7;
+}
+
+.metadata {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
-
-/* === BASE STYLES === */
-
-body {
-  background: var(--background);
-  color: var(--text-primary);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* === SCROLLBAR === */
 
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: #0a0a0a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--surface-elevated);
+  background: #1a1a1a;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  background: #3b82f6;
 }
 
-/* === SELECTION === */
-
 ::selection {
-  background: var(--accent);
-  color: var(--text-primary);
+  background: #3b82f6;
+  color: #f5f5f5;
 }
