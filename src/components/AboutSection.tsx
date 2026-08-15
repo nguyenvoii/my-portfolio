@@ -103,14 +103,6 @@ export const AboutSection = () => {
                 </div>
               </div>
             </div>
-
-            {/* Identity statement */}
-            <div className="glass-panel p-8 md:p-12 border-l-4 border-l-aurora">
-              <blockquote className="text-xl md:text-2xl font-display text-soft-white/80 italic">
-                "Stay cool."
-              </blockquote>
-              <p className="mt-6 text-muted-blue">— Nguyễn Voi</p>
-            </div>
           </div>
         </div>
       </div>
