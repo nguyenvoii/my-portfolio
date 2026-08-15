@@ -28,6 +28,7 @@ export const Navigation = ({ currentSection, sections }: NavigationProps) => {
     projects: 'PROJECTS',
     music: 'PLAY',
     explore: 'EXPLORE',
+    gear: 'GEAR',
     connect: 'CONNECT',
   };
 
