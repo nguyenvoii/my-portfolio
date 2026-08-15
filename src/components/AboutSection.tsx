@@ -107,8 +107,7 @@ export const AboutSection = () => {
             {/* Identity statement */}
             <div className="glass-panel p-8 md:p-12 border-l-4 border-l-aurora">
               <blockquote className="text-xl md:text-2xl font-display text-soft-white/80 italic">
-                "Programming is my career direction. Music is a major part of my identity.
-                Together, they represent who I am."
+                "Stay cool."
               </blockquote>
               <p className="mt-6 text-muted-blue">— Nguyễn Voi</p>
             </div>

@@ -241,8 +241,7 @@ function App() {
                 aboutAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
               }`}>
                 <blockquote className="text-lg md:text-xl text-soft-white/90 italic leading-relaxed">
-                  "Programming is my career direction. Music is a major part of my identity.
-                  Together, they represent who I am."
+                  "Stay cool."
                 </blockquote>
                 <p className="mt-4 text-gray-400 text-sm">— Nguyễn "Voi" Anh Phi</p>
               </div>

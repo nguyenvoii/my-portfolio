@@ -92,7 +92,7 @@ export const personalInfo = {
   // 3 Separate Learning Paths
   education: {
     institution: 'FPT Polytechnic',
-    field: 'Công nghệ thông tin - Phát triển phần mềm',
+    field: 'Information Technology - Software Development',
     period: '2024–2027',
     status: 'Sinh viên hiện tại',
   },
@@ -118,7 +118,7 @@ export const personalInfo = {
 
 I'm curious, creative, and interested in technology, Japanese music and anime, and always learning. I'm still exploring my future rather than pretending I have everything figured out.
 
-Programming is my career direction. Music is a major part of my identity. Together, they represent who I am.`,
+Stay cool.`,
 };
 
 // Guitar journey timeline
