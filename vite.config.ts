@@ -9,9 +9,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  base: '/portfolio/', // GitHub Pages repository name
+  base: '/my-portfolio/', // GitHub Pages repository name
   build: {
-    outDir: 'dist',
+    outDir: 'docs',
     assetsDir: 'assets',
     sourcemap: true,
     rollupOptions: {
