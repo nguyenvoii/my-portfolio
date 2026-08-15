@@ -74,19 +74,19 @@ export const AdvancedAuroraBackground = () => {
 
     // Create snow particles
     const createSnowParticles = () => {
-      const particleCount = 200; // Reduced from 400 to 200 for better visibility
+      const particleCount = 100; // Further reduced from 200 to 100 for minimal visibility
 
       for (let i = 0; i < particleCount; i++) {
         const layer = Math.random() < 0.3 ? 0 : Math.random() < 0.6 ? 1 : 2;
-        const sizeMultiplier = layer === 0 ? 0.6 : layer === 1 ? 1 : 1.4;
+        const sizeMultiplier = layer === 0 ? 0.5 : layer === 1 ? 0.7 : 1;
 
         snowParticles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
           vx: (Math.random() - 0.5) * 0.3,
           vy: Math.random() * 1.5 + 0.5,
-          size: (Math.random() * 2 + 1) * sizeMultiplier,
-          alpha: (Math.random() * 0.3 + 0.1) * (layer === 0 ? 0.4 : layer === 1 ? 0.6 : 0.8), // Reduced overall opacity
+          size: (Math.random() * 1.5 + 0.5) * sizeMultiplier, // Smaller particles
+          alpha: (Math.random() * 0.15 + 0.05) * (layer === 0 ? 0.3 : layer === 1 ? 0.5 : 0.7), // Much lower opacity
           layer,
         });
       }
@@ -156,9 +156,9 @@ export const AdvancedAuroraBackground = () => {
             particle.x = Math.random() * canvas.width;
           }
 
-          // Draw snow particle with reduced alpha
-          const reducedAlpha = particle.alpha * 0.5; // Reduce visibility by 50%
-          ctx.fillStyle = `rgba(255, 255, 255, ${reducedAlpha})`;
+          // Draw snow particle with very reduced alpha
+          const veryReducedAlpha = particle.alpha * 0.3; // Reduce visibility by 70%
+          ctx.fillStyle = `rgba(255, 255, 255, ${veryReducedAlpha})`;
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
           ctx.fill();
