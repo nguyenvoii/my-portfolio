@@ -87,7 +87,7 @@ export const personalInfo = {
   name: 'Nguyễn "Voi" Anh Phi',
   fullName: 'Nguyễn "Voi" Anh Phi',
   tagline: 'Guitarist / Developer',
-  taglineExtended: 'Where logic meets melody.',
+  taglineExtended: 'Stay cool.',
 
   // 3 Separate Learning Paths
   education: {
@@ -118,7 +118,7 @@ export const personalInfo = {
 
 I'm curious, creative, and interested in technology, Japanese music and anime, and always learning. I'm still exploring my future rather than pretending I have everything figured out.
 
-Stay cool.`,
+Hope we can learn and grow together.`,
 };
 
 // Guitar journey timeline
