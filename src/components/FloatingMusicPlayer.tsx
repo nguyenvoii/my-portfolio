@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import unlastingMp3 from '/assets/music/unlasting.mp3';
 
 // Type for browser setInterval/setTimeout
 type TimerId = ReturnType<typeof setInterval> | null;
@@ -130,7 +131,7 @@ export const FloatingMusicPlayer = () => {
         {/* Audio Element */}
         <audio
           ref={audioRef}
-          src="/assets/music/unlasting.mp3"
+          src={unlastingMp3}
           loop
           preload="auto"
           onError={() => console.log('Audio loading error')}

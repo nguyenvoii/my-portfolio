@@ -11,6 +11,7 @@ import { getBands, getSoloArtists } from './data/artists';
 import { projects } from './data/projects';
 import './styles/globals.css';
 import type { Section } from './types';
+import avatar from '/assets/avatar.jpg';
 
 function App() {
   const sections: Section[] = ['hero', 'about', 'build', 'projects', 'music', 'explore', 'connect'];
@@ -111,7 +112,7 @@ function App() {
                   {/* Avatar - elevated above snow with aurora glow */}
                   <div className="relative w-full h-full rounded-full overflow-hidden aurora-glow border-2 border-aurora/40 shadow-2xl z-10">
                     <img
-                      src="/assets/avatar.jpg"
+                      src={avatar}
                       alt="Professional portrait photo of Nguyễn Voi Anh Phi, guitarist and web developer"
                       className="w-full h-full object-cover scale-110 hover:scale-100 transition-transform duration-700"
                       loading="eager"
@@ -609,7 +610,7 @@ function App() {
             <div className={`w-40 h-40 mx-auto mb-12 rounded-full overflow-hidden aurora-glow border-2 border-aurora/30 transition-all duration-1000 ${
               connectAnimation.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
             }`}>
-              <img src="/assets/avatar.jpg" alt={personalInfo.name} className="w-full h-full object-cover" />
+              <img src={avatar} alt={personalInfo.name} className="w-full h-full object-cover" />
             </div>
 
             <h2 className={`text-7xl font-bold text-gradient mb-8 transition-all duration-1000 delay-200 ${

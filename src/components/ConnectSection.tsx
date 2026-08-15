@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { socialLinks, personalInfo } from '../data/content';
+import avatar from '/assets/avatar.jpg';
 
 export const ConnectSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -97,7 +98,7 @@ export const ConnectSection = () => {
             className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden aurora-glow"
           >
             <img
-              src="/assets/avatar.jpg"
+              src={avatar}
               alt={personalInfo.name}
               className="w-full h-full object-cover"
             />

@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { personalInfo } from '../data/content';
 import { animateHeroEntry, createParallax, checkReducedMotion } from '../utils/animations';
+import avatar from '/assets/avatar.jpg';
 
 export const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -117,7 +118,7 @@ export const HeroSection = () => {
             <div className="relative w-full h-full rounded-full overflow-hidden aurora-glow">
               <img
                 ref={avatarImgRef}
-                src="/assets/avatar.jpg"
+                src={avatar}
                 alt="Nguyễn Voi - Guitarist & Developer"
                 className="w-full h-full object-cover scale-110 hover:scale-100 transition-transform duration-700"
                 loading="eager"

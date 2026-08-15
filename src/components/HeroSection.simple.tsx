@@ -1,4 +1,5 @@
 import { personalInfo } from '../data/content';
+import avatar from '/assets/avatar.jpg';
 
 export const HeroSection = () => {
   return (
@@ -11,7 +12,7 @@ export const HeroSection = () => {
               <div className="absolute inset-0 bg-aurora/20 rounded-full blur-3xl" />
               <div className="relative w-full h-full rounded-full overflow-hidden">
                 <img
-                  src="/assets/avatar.jpg"
+                  src={avatar}
                   alt="Nguyễn Voi - Guitarist & Developer"
                   className="w-full h-full object-cover"
                 />
