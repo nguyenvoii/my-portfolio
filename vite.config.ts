@@ -9,7 +9,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  base: '/',
+  base: '/my-portfolio/', // GitHub Pages repository name
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
