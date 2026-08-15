@@ -1,0 +1,118 @@
+import { useState, useRef, useEffect } from 'react';
+
+// Type for browser setInterval/setTimeout
+type TimerId = ReturnType<typeof setInterval> | null;
+
+export const FloatingMusicPlayer = () => {
+  const [isPlaying, setIsPlaying] = useState(true); // Auto-play by default
+  const [progress, setProgress] = useState(0);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const intervalRef = useRef<TimerId>(null);
+
+  useEffect(() => {
+    // Auto-play on mount
+    const audio = audioRef.current;
+    if (audio) {
+      audio.play().catch(err => {
+        console.log('Auto-play prevented by browser:', err);
+        setIsPlaying(false);
+      });
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.play();
+      intervalRef.current = setInterval(() => {
+        if (audio.duration) {
+          setProgress((audio.currentTime / audio.duration) * 100);
+        }
+      }, 100);
+    } else {
+      audio.pause();
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isPlaying]);
+
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
+    <div className="fixed bottom-6 right-6 z-50">
+      <div className="glass-panel px-6 py-4 rounded-full border border-aurora/30 aurora-glow hover:border-aurora/60 transition-all duration-300">
+        <div className="flex items-center gap-4">
+          {/* Play/Pause Button */}
+          <button
+            onClick={togglePlay}
+            className="w-12 h-12 rounded-full bg-aurora/20 border-2 border-aurora flex items-center justify-center hover:bg-aurora/30 hover:scale-110 transition-all duration-300"
+            aria-label={isPlaying ? 'Pause' : 'Play'}
+          >
+            {isPlaying ? (
+              <svg className="w-5 h-5 text-aurora" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 text-aurora ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            )}
+          </button>
+
+          {/* Song Info */}
+          <div className="text-left">
+            <div className="text-sm font-medium text-soft-white">unlasting</div>
+            <div className="text-xs text-muted-blue">LiSA</div>
+          </div>
+
+          {/* Waveform Animation */}
+          <div className="flex items-end gap-0.5 h-8">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="w-1 bg-aurora/60 rounded-full transition-all duration-150 ease-out"
+                style={{
+                  height: isPlaying ? `${Math.random() * 100}%` : '20%',
+                  transitionDuration: `${150 + Math.random() * 100}ms`,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Progress Bar */}
+          <div className="w-24 h-1 bg-midnight/50 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-aurora to-sky-blue transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Audio Element */}
+        <audio
+          ref={audioRef}
+          src="/assets/music/unlasting.mp3"
+          loop
+          onError={() => console.log('Audio loading error')}
+        />
+      </div>
+    </div>
+  );
+};
