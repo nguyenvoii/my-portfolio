@@ -5,17 +5,19 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
+# Set permissions of the GITHUB_TOKEN to allow deployment
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Allow only one concurrent deployment
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
-  deploy:
+  build-and-deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -27,8 +29,9 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Install dependencies
         run: npm ci
