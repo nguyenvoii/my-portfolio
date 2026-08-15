@@ -11,13 +11,13 @@ export const LoadingState = () => (
 
       {/* Loading text */}
       <div className="space-y-3">
-        <h2 className="text-xl sm:text-2xl font-bold text-gradient">Loading Experience</h2>
+        <h2 className="text-xl sm:text-2xl font-bold text-gradient">Hold tight...</h2>
         <div className="flex items-center justify-center gap-2">
           <div className="w-2 h-2 bg-aurora rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
           <div className="w-2 h-2 bg-sky-blue rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
           <div className="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
         </div>
-        <p className="text-sm text-gray-400">Initializing aurora effects & snow system...</p>
+        <p className="text-sm text-gray-400">Making everything perfect for you ✨</p>
       </div>
 
       {/* Progress bar */}
