@@ -84,7 +84,7 @@ function App() {
               </div>
 
               {/* Avatar Container - Right Side */}
-              <div className={`flex-1 flex justify-center items-center transition-all duration-1000 delay-500 ${
+              <div className={`flex-1 flex justify-center items-center transition-all duration-1000 delay-500 relative z-30 ${
                 heroAnimation.isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
               }`}>
                 <div className="relative w-[450px] h-[450px] lg:w-[500px] lg:h-[500px]">
@@ -93,7 +93,7 @@ function App() {
                   <div className="absolute inset-0 bg-gradient-radial from-aurora/40 via-transparent to-transparent rounded-full" />
 
                   {/* Avatar - elevated above snow with aurora glow */}
-                  <div className="relative w-full h-full rounded-full overflow-hidden aurora-glow border-2 border-aurora/40 shadow-2xl">
+                  <div className="relative w-full h-full rounded-full overflow-hidden aurora-glow border-2 border-aurora/40 shadow-2xl z-10">
                     <img
                       src="/assets/avatar.jpg"
                       alt="Nguyễn Voi Anh Phi - Guitarist & Developer"
