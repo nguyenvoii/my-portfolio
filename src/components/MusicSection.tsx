@@ -275,19 +275,38 @@ export const MusicSection = () => {
               </div>
             </div>
 
-            {/* Current focus */}
+            {/* My Gear */}
             <div className="text-center">
-              <h4 className="text-lg font-semibold text-soft-white mb-4">Currently Learning</h4>
-              <div className="flex flex-wrap justify-center gap-3">
-                {guitarJourney.currentFocus.map((focus, index) => (
-                  <span
-                    key={index}
-                    className="px-4 py-2 bg-aurora/10 border border-aurora/30 rounded-full text-sm text-aurora"
-                  >
-                    {focus}
-                  </span>
-                ))}
-              </div>
+              <h4 className="text-lg font-semibold text-soft-white mb-4">My Gear</h4>
+              <a
+                href="https://equipboard.com/nguyen_voi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block group"
+              >
+                <div className="px-6 py-3 bg-aurora/10 border-2 border-aurora/30 rounded-full hover:bg-aurora/20 hover:border-aurora/50 transition-all duration-300 group-hover:scale-105">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">🎸</span>
+                    <div className="text-left">
+                      <div className="text-aurora font-medium">View My Gear Setup</div>
+                      <div className="text-xs text-gray-400">1 Guitar • 1 Amp • 3 Effects • 5 Accessories</div>
+                    </div>
+                    <svg
+                      className="w-5 h-5 text-aurora group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </a>
             </div>
           </div>
         </div>

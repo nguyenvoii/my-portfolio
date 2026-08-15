@@ -1,7 +1,7 @@
 // Core type definitions for the portfolio
 
 // Section type for navigation
-export type Section = 'hero' | 'about' | 'build' | 'projects' | 'music' | 'explore' | 'gear' | 'connect';
+export type Section = 'hero' | 'about' | 'build' | 'projects' | 'music' | 'explore' | 'connect';
 
 export interface Project {
   id: string;

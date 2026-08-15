@@ -4,7 +4,6 @@ import { FloatingMusicPlayer } from './components/FloatingMusicPlayer';
 import { AdvancedAuroraBackground } from './components/AdvancedAuroraBackground';
 import { AccessibilityHints } from './components/AccessibilityHints';
 import { LoadingState } from './components/LoadingState';
-import { GearSection } from './components/GearSection';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 import { useScrollSpy } from './hooks/useScrollSpy';
 import { personalInfo, skills, socialLinks, guitarJourney, hobbies } from './data/content';
@@ -15,7 +14,7 @@ import type { Section } from './types';
 import avatar from '/assets/avatar.jpg';
 
 function App() {
-  const sections: Section[] = ['hero', 'about', 'build', 'projects', 'music', 'explore', 'gear', 'connect'];
+  const sections: Section[] = ['hero', 'about', 'build', 'projects', 'music', 'explore', 'connect'];
   const [currentSection, setCurrentSection] = useState<Section>('hero');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -597,9 +596,6 @@ function App() {
             </div>
           </div>
         </section>
-
-        {/* Gear Section */}
-        <GearSection />
 
         {/* Connect Section */}
         <section id="section-connect" ref={connectAnimation.ref} className="min-h-screen flex items-center justify-center px-6 py-24 relative">
