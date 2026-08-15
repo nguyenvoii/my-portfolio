@@ -8,26 +8,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function Portfolio() {
   const [currentSection, setCurrentSection] = useState('about');
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    // Magnetic Cursor Effect
-    const handleMouseMove = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        gsap.to(cursorRef.current, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 0.1,
-          ease: 'power2.out'
-        });
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
     // About Me Scrollytelling
-    gsap.from('.about-text', {
+    const aboutAnimations = gsap.from('.about-text', {
       y: 100,
       opacity: 0,
       duration: 1.2,
@@ -40,7 +24,7 @@ export default function Portfolio() {
     });
 
     // Skills Stagger Animation
-    gsap.from('.skill-item', {
+    const skillsAnimations = gsap.from('.skill-item', {
       x: -100,
       opacity: 0,
       duration: 0.8,
@@ -53,7 +37,7 @@ export default function Portfolio() {
     });
 
     // Hobbies Reveal
-    gsap.from('.hobby-item', {
+    const hobbiesAnimations = gsap.from('.hobby-item', {
       scale: 0.8,
       opacity: 0,
       duration: 0.6,
@@ -66,7 +50,7 @@ export default function Portfolio() {
     });
 
     // Social Links Animation
-    gsap.from('.social-item', {
+    const socialAnimations = gsap.from('.social-item', {
       y: 50,
       opacity: 0,
       duration: 0.8,
@@ -78,7 +62,13 @@ export default function Portfolio() {
       }
     });
 
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+    return () => {
+      aboutAnimations.revert();
+      skillsAnimations.revert();
+      hobbiesAnimations.revert();
+      socialAnimations.revert();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
   }, []);
 
   const handleNavClick = (section: string) => {
@@ -91,13 +81,6 @@ export default function Portfolio() {
 
   return (
     <div className="relative bg-black text-white overflow-hidden">
-      {/* Magnetic Cursor */}
-      <div
-        ref={cursorRef}
-        className="fixed w-8 h-8 border-2 border-purple-500 rounded-full pointer-events-none z-50 mix-blend-difference transition-transform duration-100"
-        style={{ transform: 'translate(-50%, -50%)' }}
-      />
-
       {/* Snow Effect Background */}
       <div className="snow-container fixed inset-0 pointer-events-none z-40 opacity-30">
         {[...Array(50)].map((_, i) => (
@@ -113,16 +96,17 @@ export default function Portfolio() {
         ))}
       </div>
 
-      {/* Aurora Background */}
+      {/* Blue Night Sky Background */}
       <div className="fixed inset-0 z-0">
-        <div className="absolute top-0 left-0 w-96 h-96 bg-green-500 rounded-full blur-3xl opacity-20 animate-pulse" />
-        <div className="absolute bottom-0 right-0 w-80 h-80 bg-purple-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-pink-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-blue-900 via-blue-800 to-indigo-900" />
+        <div className="absolute top-20 left-20 w-96 h-96 bg-blue-500 rounded-full blur-3xl opacity-20 animate-pulse" />
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-indigo-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-cyan-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '2s' }} />
       </div>
 
-      {/* Magnetic Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-30 p-6 flex justify-between items-center backdrop-blur-md bg-black/30">
-        <div className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-30 p-6 flex justify-between items-center backdrop-blur-md bg-blue-900/30">
+        <div className="text-2xl font-bold text-white">
           NV
         </div>
         <div className="flex gap-8">
@@ -131,7 +115,7 @@ export default function Portfolio() {
               key={item}
               onClick={() => handleNavClick(item)}
               className={`text-sm uppercase tracking-wider transition-colors ${
-                currentSection === item ? 'text-purple-400' : 'text-gray-400 hover:text-white'
+                currentSection === item ? 'text-cyan-400' : 'text-gray-300 hover:text-white'
               }`}
             >
               {item}
@@ -147,21 +131,21 @@ export default function Portfolio() {
             <img
               src="/avatar.jpg"
               alt="Nguyễn Voi"
-              className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-purple-500/30 shadow-2xl"
+              className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-cyan-500/30 shadow-2xl"
             />
           </div>
-          <h1 className="text-6xl md:text-8xl font-bold mb-4">
+          <h1 className="text-6xl md:text-8xl font-bold mb-4 text-white">
             Nguyễn Voi
           </h1>
-          <p className="text-2xl md:text-3xl text-purple-400 mb-6">
+          <p className="text-2xl md:text-3xl text-cyan-400 mb-6">
             Developer & Guitarist
           </p>
-          <p className="text-xl text-gray-400 mb-8">
+          <p className="text-xl text-gray-300 mb-8">
             Where Logic Meets Melody
           </p>
           <button
             onClick={() => handleNavClick('about')}
-            className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full font-semibold hover:opacity-90 transition-opacity"
+            className="px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full font-semibold hover:opacity-90 transition-opacity text-white"
           >
             Explore More
           </button>
@@ -171,8 +155,8 @@ export default function Portfolio() {
       {/* About Me Section */}
       <section id="about" className="about-section min-h-screen py-20 relative z-10 px-8">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-5xl font-bold mb-16 text-center">
-            About <span className="text-purple-400">Me</span>
+          <h2 className="text-5xl font-bold mb-16 text-center text-white">
+            About <span className="text-cyan-400">Me</span>
           </h2>
 
           <div className="space-y-8">
@@ -190,12 +174,12 @@ export default function Portfolio() {
               Building digital experiences by day, exploring rhythm by night.
             </p>
 
-            <div className="about-text mt-12 p-6 bg-gray-900/50 rounded-2xl border border-purple-500/20">
-              <h3 className="text-2xl font-bold mb-4 text-purple-400">Education</h3>
+            <div className="about-text mt-12 p-6 bg-blue-900/30 rounded-2xl border border-cyan-500/20">
+              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Education</h3>
               <div className="text-gray-300">
                 <p className="font-semibold text-white">FPT Polytechnic</p>
                 <p>Công Nghệ Thông Tin | 2024-2027</p>
-                <p className="text-sm text-gray-500 mt-2">Current Status: Student</p>
+                <p className="text-sm text-gray-400 mt-2">Current Status: Student</p>
               </div>
             </div>
           </div>
@@ -203,10 +187,10 @@ export default function Portfolio() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="skills-section min-h-screen py-20 relative z-10 px-8 bg-gradient-to-b from-black to-gray-900">
+      <section id="skills" className="skills-section min-h-screen py-20 relative z-10 px-8 bg-gradient-to-b from-indigo-900 to-blue-900">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-5xl font-bold mb-16 text-center">
-            Skills & <span className="text-purple-400">Expertise</span>
+          <h2 className="text-5xl font-bold mb-16 text-center text-white">
+            Skills & <span className="text-cyan-400">Expertise</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -216,8 +200,8 @@ export default function Portfolio() {
               { category: 'Languages', items: ['IELTS: Current 5.0 | Goal 7.0', 'Vietnamese (Native)'] },
               { category: 'Soft Skills', items: ['Problem-solving', 'Communication'] },
             ].map((skillGroup, groupIndex) => (
-              <div key={groupIndex} className="skill-item p-6 bg-gray-900/50 rounded-2xl border border-purple-500/20">
-                <h3 className="text-xl font-bold mb-4 text-purple-400">{skillGroup.category}</h3>
+              <div key={groupIndex} className="skill-item p-6 bg-blue-900/30 rounded-2xl border border-cyan-500/20">
+                <h3 className="text-xl font-bold mb-4 text-cyan-400">{skillGroup.category}</h3>
                 <div className="space-y-2">
                   {skillGroup.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="text-gray-300">{item}</div>
@@ -232,8 +216,8 @@ export default function Portfolio() {
       {/* Hobbies Section */}
       <section id="hobbies" className="hobbies-section min-h-screen py-20 relative z-10 px-8">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-5xl font-bold mb-16 text-center">
-            Hobbies & <span className="text-purple-400">Interests</span>
+          <h2 className="text-5xl font-bold mb-16 text-center text-white">
+            Hobbies & <span className="text-cyan-400">Interests</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -259,7 +243,7 @@ export default function Portfolio() {
                 icon: '📖'
               }
             ].map((hobby, index) => (
-              <div key={index} className="hobby-item p-8 bg-gray-900/50 rounded-2xl border border-purple-500/20 hover:border-purple-500/50 transition-all">
+              <div key={index} className="hobby-item p-8 bg-blue-900/30 rounded-2xl border border-cyan-500/20 hover:border-cyan-500/50 transition-all">
                 <div className="text-4xl mb-4">{hobby.icon}</div>
                 <h3 className="text-2xl font-bold mb-3 text-white">{hobby.title}</h3>
                 <p className="text-gray-400">{hobby.description}</p>
@@ -270,10 +254,10 @@ export default function Portfolio() {
       </section>
 
       {/* Social Section */}
-      <section id="social" className="social-section min-h-screen py-20 relative z-10 px-8 bg-gradient-to-b from-gray-900 to-black">
+      <section id="social" className="social-section min-h-screen py-20 relative z-10 px-8 bg-gradient-to-b from-blue-900 to-indigo-900">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-5xl font-bold mb-16 text-center">
-            Get In <span className="text-purple-400">Touch</span>
+          <h2 className="text-5xl font-bold mb-16 text-center text-white">
+            Get In <span className="text-cyan-400">Touch</span>
           </h2>
 
           <div className="space-y-4">
@@ -285,13 +269,13 @@ export default function Portfolio() {
               <a
                 key={index}
                 href={social.url || '#'}
-                className="social-item block p-6 bg-gray-900/50 rounded-2xl border border-purple-500/20 hover:border-purple-500/50 transition-all group"
+                className="social-item block p-6 bg-blue-900/30 rounded-2xl border border-cyan-500/20 hover:border-cyan-500/50 transition-all group"
                 target={social.url ? '_blank' : '_self'}
                 rel={social.url ? 'noopener noreferrer' : undefined}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-purple-400 font-semibold">{social.platform}</p>
+                    <p className="text-sm text-cyan-400 font-semibold">{social.platform}</p>
                     <p className="text-xl text-white mt-1">{social.handle}</p>
                   </div>
                   <div className={`w-12 h-12 rounded-full bg-gradient-to-r ${social.color} opacity-70 group-hover:opacity-100 transition-opacity`} />
@@ -303,7 +287,7 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 py-8 text-center text-gray-500">
+      <footer className="relative z-10 py-8 text-center text-gray-400">
         <p>&copy; 2025 Nguyễn Voi. Built with Next.js, GSAP & creativity.</p>
       </footer>
 
