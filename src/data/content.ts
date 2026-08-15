@@ -94,15 +94,15 @@ export const personalInfo = {
     institution: 'FPT Polytechnic',
     field: 'Information Technology - Software Development',
     period: '2024–2027',
-    status: 'Sinh viên hiện tại',
+    status: 'Current Student',
   },
 
   english: {
     institution: 'DOL English',
     field: 'IELTS Preparation',
     level: '5.0 → 7.0',
-    period: 'Đang học',
-    status: 'Học viên hiện tại',
+    period: 'Currently studying',
+    status: 'Current Student',
     url: 'https://www.facebook.com/dolenglish.hanoi?locale=vi_VN',
   },
 
@@ -110,8 +110,8 @@ export const personalInfo = {
     institution: 'GuitarPlus Academy',
     field: 'Electric Guitar',
     level: '6+ months',
-    period: 'Đang học',
-    status: 'Học viên hiện tại',
+    period: 'Currently studying',
+    status: 'Current Student',
     url: 'https://www.facebook.com/guitarplusacademy?locale=vi_VN',
   },
   bio: `I'm currently studying Information Technology at FPT Polytechnic while exploring software development, music, and the things that inspire me.
