@@ -44,16 +44,16 @@ export const AdvancedAuroraBackground = () => {
         'rgba(0, 191, 255, ',   // Deep sky blue
       ];
 
-      for (let i = 0; i < 150; i++) {
+      for (let i = 0; i < 120; i++) {
         const color = colors[Math.floor(Math.random() * colors.length)];
         auroraParticles.push({
           x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height * 0.6, // Upper portion
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.3,
-          size: Math.random() * 200 + 100,
+          y: Math.random() * canvas.height * 0.6,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.2,
+          size: Math.random() * 180 + 80,
           color: color,
-          alpha: Math.random() * 0.15 + 0.05,
+          alpha: Math.random() * 0.12 + 0.04,
           phase: Math.random() * Math.PI * 2,
         });
       }
@@ -67,26 +67,26 @@ export const AdvancedAuroraBackground = () => {
       vy: number;
       size: number;
       alpha: number;
-      layer: number; // 0 = back, 1 = middle, 2 = front
+      layer: number;
     }
 
     const snowParticles: SnowParticle[] = [];
 
-    // Create snow particles
+    // Create snow particles with better balance
     const createSnowParticles = () => {
-      const particleCount = 100; // Further reduced from 200 to 100 for minimal visibility
+      const particleCount = 250; // Balanced amount
 
       for (let i = 0; i < particleCount; i++) {
-        const layer = Math.random() < 0.3 ? 0 : Math.random() < 0.6 ? 1 : 2;
-        const sizeMultiplier = layer === 0 ? 0.5 : layer === 1 ? 0.7 : 1;
+        const layer = Math.random() < 0.33 ? 0 : Math.random() < 0.66 ? 1 : 2;
+        const sizeMultiplier = layer === 0 ? 0.5 : layer === 1 ? 0.75 : 1;
 
         snowParticles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: Math.random() * 1.5 + 0.5,
-          size: (Math.random() * 1.5 + 0.5) * sizeMultiplier, // Smaller particles
-          alpha: (Math.random() * 0.15 + 0.05) * (layer === 0 ? 0.3 : layer === 1 ? 0.5 : 0.7), // Much lower opacity
+          vx: (Math.random() - 0.5) * 0.25,
+          vy: Math.random() * 1.2 + 0.4,
+          size: (Math.random() * 1.8 + 0.8) * sizeMultiplier,
+          alpha: (Math.random() * 0.25 + 0.08) * (layer === 0 ? 0.5 : layer === 1 ? 0.7 : 0.9),
           layer,
         });
       }
@@ -100,7 +100,7 @@ export const AdvancedAuroraBackground = () => {
     let time = 0;
 
     const animate = () => {
-      time += 0.01;
+      time += 0.008;
 
       // Clear canvas with gradient background
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
@@ -111,10 +111,10 @@ export const AdvancedAuroraBackground = () => {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Draw aurora
-      auroraParticles.forEach((particle, index) => {
+      auroraParticles.forEach((particle) => {
         // Update position with wave motion
-        particle.x += particle.vx + Math.sin(time + particle.phase) * 0.3;
-        particle.y += particle.vy + Math.cos(time + particle.phase * 0.5) * 0.2;
+        particle.x += particle.vx + Math.sin(time + particle.phase) * 0.25;
+        particle.y += particle.vy + Math.cos(time + particle.phase * 0.4) * 0.15;
 
         // Wrap around screen
         if (particle.x < -particle.size) particle.x = canvas.width + particle.size;
@@ -123,25 +123,25 @@ export const AdvancedAuroraBackground = () => {
         if (particle.y > canvas.height * 0.6 + particle.size) particle.y = -particle.size;
 
         // Draw aurora glow
-        const gradient = ctx.createRadialGradient(
+        const glowGradient = ctx.createRadialGradient(
           particle.x, particle.y, 0,
           particle.x, particle.y, particle.size
         );
-        gradient.addColorStop(0, particle.color + particle.alpha + ')');
-        gradient.addColorStop(0.5, particle.color + (particle.alpha * 0.5) + ')');
-        gradient.addColorStop(1, particle.color + '0)');
+        glowGradient.addColorStop(0, particle.color + particle.alpha + ')');
+        glowGradient.addColorStop(0.5, particle.color + (particle.alpha * 0.4) + ')');
+        glowGradient.addColorStop(1, particle.color + '0)');
 
-        ctx.fillStyle = gradient;
+        ctx.fillStyle = glowGradient;
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
         ctx.fill();
       });
 
-      // Draw snow particles by layer (back to front) - reduced opacity for better visibility
+      // Draw snow particles by layer (back to front)
       [0, 1, 2].forEach(layer => {
         snowParticles.filter(p => p.layer === layer).forEach(particle => {
           // Update position
-          particle.x += particle.vx + Math.sin(time + particle.x * 0.01) * 0.1;
+          particle.x += particle.vx + Math.sin(time + particle.x * 0.008) * 0.08;
           particle.y += particle.vy;
 
           // Wrap around screen
@@ -156,9 +156,8 @@ export const AdvancedAuroraBackground = () => {
             particle.x = Math.random() * canvas.width;
           }
 
-          // Draw snow particle with very reduced alpha
-          const veryReducedAlpha = particle.alpha * 0.3; // Reduce visibility by 70%
-          ctx.fillStyle = `rgba(255, 255, 255, ${veryReducedAlpha})`;
+          // Draw snow particle with soft opacity
+          ctx.fillStyle = `rgba(255, 255, 255, ${particle.alpha})`;
           ctx.beginPath();
           ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
           ctx.fill();
@@ -167,15 +166,15 @@ export const AdvancedAuroraBackground = () => {
 
       // Add aurora wave overlay
       ctx.globalCompositeOperation = 'lighter';
-      for (let i = 0; i < 3; i++) {
-        const waveY = canvas.height * 0.2 + Math.sin(time + i * 2) * 50;
-        const gradient = ctx.createLinearGradient(0, waveY - 100, 0, waveY + 100);
-        gradient.addColorStop(0, 'rgba(0, 245, 255, 0)');
-        gradient.addColorStop(0.5, `rgba(${i === 0 ? '0, 245, 255' : i === 1 ? '123, 104, 238' : '74, 144, 226'}, 0.03)`);
-        gradient.addColorStop(1, 'rgba(0, 245, 255, 0)');
+      for (let i = 0; i < 2; i++) {
+        const waveY = canvas.height * 0.25 + Math.sin(time + i * 1.5) * 40;
+        const waveGradient = ctx.createLinearGradient(0, waveY - 80, 0, waveY + 80);
+        waveGradient.addColorStop(0, 'rgba(0, 245, 255, 0)');
+        waveGradient.addColorStop(0.5, `rgba(${i === 0 ? '0, 245, 255' : '123, 104, 238'}, 0.02)`);
+        waveGradient.addColorStop(1, 'rgba(0, 245, 255, 0)');
 
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, waveY - 100, canvas.width, 200);
+        ctx.fillStyle = waveGradient;
+        ctx.fillRect(0, waveY - 80, canvas.width, 160);
       }
       ctx.globalCompositeOperation = 'source-over';
 

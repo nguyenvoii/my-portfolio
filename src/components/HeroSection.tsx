@@ -194,9 +194,6 @@ export const HeroSection = () => {
       <div className="absolute inset-0 pointer-events-none">
         {/* Vignette effect */}
         <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-midnight/50" />
-
-        {/* Scan line effect */}
-        <div className="absolute inset-0 opacity-[0.02] bg-[repeating-linear-gradient(0deg,transparent,transparent_1px,#000_1px,#000_2px)]" />
       </div>
     </section>
   );
