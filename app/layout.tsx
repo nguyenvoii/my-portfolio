@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Nguyễn Voi - Developer & Guitarist",
+  title: "Nguyễn Voi",
   description: "Where Logic Meets Melody - Building Digital Experiences, Strumming Real Ones. Personal portfolio of a developer and guitarist.",
   keywords: ["developer", "guitarist", "portfolio", "web development", "music"],
   authors: [{ name: "Nguyễn Voi" }],
@@ -21,6 +21,10 @@ export const metadata: Metadata = {
     title: "Nguyễn Voi - Developer & Guitarist",
     description: "Where Logic Meets Melody - Building Digital Experiences, Strumming Real Ones",
     type: "website",
+  },
+  icons: {
+    icon: "/avatar.jpg",
+    apple: "/avatar.jpg",
   },
 };
 
