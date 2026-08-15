@@ -89,7 +89,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
   {
     platform: 'Facebook',
     handle: 'nguyenvoii',
-    url: 'https://www.facebook.com/nguyenvoii/?locale=vi_VN'
+    url: 'https://www.facebook.com/nguyenvoiii/'
   }
 ];
 
