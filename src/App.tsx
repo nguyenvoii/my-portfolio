@@ -162,33 +162,33 @@ function App() {
               </div>
 
               {/* Three Learning Paths */}
-              <div className={`glass-panel p-8 transition-all duration-1000 delay-300 ${
+              <div className={`glass-panel p-4 sm:p-6 md:p-8 transition-all duration-1000 delay-300 ${
                 aboutAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
               }`}>
-                <h3 className="text-xl font-semibold text-sky-blue mb-6 flex items-center gap-3">
-                  <div className="w-3 h-3 bg-sky-blue rounded-full animate-pulse" />
-                  Learning Journey
+                <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-sky-blue mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+                  <div className="w-2 h-2 sm:w-3 sm:h-3 bg-sky-blue rounded-full animate-pulse" />
+                  <span className="truncate">Learning Journey</span>
                 </h3>
 
-                <div className="grid md:grid-cols-3 gap-5">
+                <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
                   {/* Education - IT */}
                   <a
                     href="https://fpt.edu.vn/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group p-6 rounded-lg bg-midnight/50 hover:bg-midnight/70 border border-sky-blue/20 hover:border-sky-blue/40 transition-all duration-300 interactive"
+                    className="group p-3 sm:p-4 md:p-6 rounded-lg bg-midnight/50 hover:bg-midnight/70 border border-sky-blue/20 hover:border-sky-blue/40 transition-all duration-300 interactive"
                   >
-                    <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-sky-blue/20 flex items-center justify-center group-hover:bg-sky-blue/30 transition-colors">
-                      <span className="text-2xl">🎓</span>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-4 rounded-full bg-sky-blue/20 flex items-center justify-center group-hover:bg-sky-blue/30 transition-colors">
+                      <span className="text-xl sm:text-2xl">🎓</span>
                     </div>
-                    <h4 className="text-lg font-semibold text-soft-white text-center mb-3 group-hover:text-sky-blue transition-colors">
+                    <h4 className="text-base sm:text-lg font-semibold text-soft-white text-center mb-2 sm:mb-3 group-hover:text-sky-blue transition-colors">
                       Education
                     </h4>
-                    <div className="text-center space-y-2">
-                      <p className="text-sm font-medium text-soft-white">{personalInfo.education.field}</p>
-                      <p className="text-xs text-gray-300">{personalInfo.education.institution}</p>
-                      <p className="text-xs text-gray-400 mt-2">{personalInfo.education.period}</p>
-                      <p className="text-xs text-emerald-400 mt-2">{personalInfo.education.status}</p>
+                    <div className="text-center space-y-1 sm:space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-soft-white line-clamp-2">{personalInfo.education.field}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-300 line-clamp-1">{personalInfo.education.institution}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-400">{personalInfo.education.period}</p>
+                      <p className="text-[10px] sm:text-xs text-emerald-400 font-medium">{personalInfo.education.status}</p>
                     </div>
                   </a>
 
@@ -197,19 +197,19 @@ function App() {
                     href={personalInfo.english.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group p-6 rounded-lg bg-midnight/50 hover:bg-midnight/70 border border-aurora/20 hover:border-aurora/40 transition-all duration-300 interactive"
+                    className="group p-3 sm:p-4 md:p-6 rounded-lg bg-midnight/50 hover:bg-midnight/70 border border-aurora/20 hover:border-aurora/40 transition-all duration-300 interactive"
                   >
-                    <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-aurora/20 flex items-center justify-center group-hover:bg-aurora/30 transition-colors">
-                      <span className="text-2xl">📤</span>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-4 rounded-full bg-aurora/20 flex items-center justify-center group-hover:bg-aurora/30 transition-colors">
+                      <span className="text-xl sm:text-2xl">📤</span>
                     </div>
-                    <h4 className="text-lg font-semibold text-soft-white text-center mb-3 group-hover:text-aurora transition-colors">
+                    <h4 className="text-base sm:text-lg font-semibold text-soft-white text-center mb-2 sm:mb-3 group-hover:text-aurora transition-colors">
                       English
                     </h4>
-                    <div className="text-center space-y-2">
-                      <p className="text-sm font-medium text-soft-white">{personalInfo.english.field}</p>
-                      <p className="text-xs text-gray-300">{personalInfo.english.institution}</p>
-                      <p className="text-xs text-aurora font-semibold mt-2">{personalInfo.english.level}</p>
-                      <p className="text-xs text-gray-400">{personalInfo.english.period}</p>
+                    <div className="text-center space-y-1 sm:space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-soft-white line-clamp-2">{personalInfo.english.field}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-300 line-clamp-1">{personalInfo.english.institution}</p>
+                      <p className="text-[10px] sm:text-xs text-aurora font-semibold">{personalInfo.english.level}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-400">{personalInfo.english.period}</p>
                     </div>
                   </a>
 
@@ -218,19 +218,19 @@ function App() {
                     href={personalInfo.guitar.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group p-6 rounded-lg bg-midnight/50 hover:bg-midnight/70 border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300 interactive"
+                    className="group p-3 sm:p-4 md:p-6 rounded-lg bg-midnight/50 hover:bg-midnight/70 border border-purple-400/20 hover:border-purple-400/40 transition-all duration-300 interactive"
                   >
-                    <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-purple-400/20 flex items-center justify-center group-hover:bg-purple-400/30 transition-colors">
-                      <span className="text-2xl">🎸</span>
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-4 rounded-full bg-purple-400/20 flex items-center justify-center group-hover:bg-purple-400/30 transition-colors">
+                      <span className="text-xl sm:text-2xl">🎸</span>
                     </div>
-                    <h4 className="text-lg font-semibold text-soft-white text-center mb-3 group-hover:text-purple-400 transition-colors">
+                    <h4 className="text-base sm:text-lg font-semibold text-soft-white text-center mb-2 sm:mb-3 group-hover:text-purple-400 transition-colors">
                       Guitar
                     </h4>
-                    <div className="text-center space-y-2">
-                      <p className="text-sm font-medium text-soft-white">{personalInfo.guitar.field}</p>
-                      <p className="text-xs text-gray-300">{personalInfo.guitar.institution}</p>
-                      <p className="text-xs text-purple-400 font-semibold mt-2">{personalInfo.guitar.level}</p>
-                      <p className="text-xs text-gray-400">{personalInfo.guitar.period}</p>
+                    <div className="text-center space-y-1 sm:space-y-2">
+                      <p className="text-xs sm:text-sm font-medium text-soft-white line-clamp-2">{personalInfo.guitar.field}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-300 line-clamp-1">{personalInfo.guitar.institution}</p>
+                      <p className="text-[10px] sm:text-xs text-purple-400 font-semibold">{personalInfo.guitar.level}</p>
+                      <p className="text-[10px] sm:text-xs text-gray-400">{personalInfo.guitar.period}</p>
                     </div>
                   </a>
                 </div>

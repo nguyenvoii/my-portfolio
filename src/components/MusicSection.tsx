@@ -243,56 +243,60 @@ export const MusicSection = () => {
           </div>
 
           {/* Guitar Journey */}
-          <div ref={guitarRef} className="glass-panel p-8 md:p-12">
-            <div className="text-center mb-8">
-              <div className="text-4xl mb-4">🎸</div>
-              <h3 className="text-3xl font-display font-bold text-gradient mb-4">
+          <div ref={guitarRef} className="glass-panel p-4 sm:p-6 md:p-8 lg:p-12">
+            <div className="text-center mb-6 sm:mb-8">
+              <div className="text-3xl sm:text-4xl mb-3 sm:mb-4">🎸</div>
+              <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold text-gradient mb-3 sm:mb-4">
                 GUITAR JOURNEY
               </h3>
-              <p className="text-xl text-sky-blue font-semibold mb-2">
+              <p className="text-base sm:text-lg md:text-xl text-sky-blue font-semibold mb-1 sm:mb-2">
                 {guitarJourney.duration}
               </p>
-              <p className="text-muted-blue italic">
+              <p className="text-sm sm:text-base text-muted-blue italic">
                 Still learning, still improving.
               </p>
             </div>
 
-            {/* Timeline */}
-            <div className="relative mb-8">
-              <div className="absolute top-4 left-0 right-0 h-0.5 bg-gradient-to-r from-sky-blue/30 via-aurora/50 to-sky-blue/30" />
-              <div className="relative flex justify-between">
-                {guitarJourney.stages.map((stage, index) => (
-                  <div key={index} className="text-center flex-1">
-                    <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-midnight border-2 border-aurora/50 flex items-center justify-center">
-                      <div className="w-2 h-2 bg-aurora rounded-full" />
+            {/* Timeline - Responsive */}
+            <div className="relative mb-6 sm:mb-8 overflow-x-auto">
+              <div className="min-w-max px-2">
+                <div className="absolute top-4 left-0 right-0 h-0.5 bg-gradient-to-r from-sky-blue/30 via-aurora/50 to-sky-blue/30 hidden sm:block" />
+                <div className="relative flex justify-between gap-2 sm:gap-4">
+                  {guitarJourney.stages.map((stage, index) => (
+                    <div key={index} className="text-center flex-shrink-0 w-20 sm:w-auto sm:flex-1">
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-1 sm:mb-2 rounded-full bg-midnight border-2 border-aurora/50 flex items-center justify-center">
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-aurora rounded-full" />
+                      </div>
+                      <h4 className="text-xs sm:text-sm font-medium text-soft-white mb-0.5 sm:mb-1 truncate">
+                        {stage.stage}
+                      </h4>
+                      <p className="text-[10px] sm:text-xs text-muted-blue/70 line-clamp-2 hidden sm:block">
+                        {stage.description}
+                      </p>
                     </div>
-                    <h4 className="text-sm font-medium text-soft-white mb-1">
-                      {stage.stage}
-                    </h4>
-                    <p className="text-xs text-muted-blue/70">{stage.description}</p>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* My Gear */}
-            <div className="text-center">
-              <h4 className="text-lg font-semibold text-soft-white mb-4">My Gear</h4>
+            <div className="text-center px-2 sm:px-0">
+              <h4 className="text-base sm:text-lg md:text-xl font-semibold text-soft-white mb-3 sm:mb-4">My Gear</h4>
               <a
                 href="https://equipboard.com/nguyen_voi"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block group"
+                className="inline-block group max-w-full"
               >
-                <div className="px-6 py-3 bg-aurora/10 border-2 border-aurora/30 rounded-full hover:bg-aurora/20 hover:border-aurora/50 transition-all duration-300 group-hover:scale-105">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">🎸</span>
-                    <div className="text-left">
-                      <div className="text-aurora font-medium">View My Gear Setup</div>
-                      <div className="text-xs text-gray-400">1 Guitar • 1 Multi-Effects • 7 Accessories</div>
+                <div className="px-4 sm:px-6 py-2 sm:py-3 bg-aurora/10 border-2 border-aurora/30 rounded-full hover:bg-aurora/20 hover:border-aurora/50 transition-all duration-300 group-hover:scale-105">
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    <span className="text-xl sm:text-2xl">🎸</span>
+                    <div className="text-left flex-shrink min-w-0">
+                      <div className="text-sm sm:text-base text-aurora font-medium truncate">View My Gear Setup</div>
+                      <div className="text-[10px] sm:text-xs text-gray-400 truncate">1 Guitar • 1 Multi-Effects • 7 Accessories</div>
                     </div>
                     <svg
-                      className="w-5 h-5 text-aurora group-hover:translate-x-1 transition-transform"
+                      className="w-4 h-4 sm:w-5 sm:h-5 text-aurora group-hover:translate-x-1 transition-transform flex-shrink-0"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
