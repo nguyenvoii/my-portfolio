@@ -31,8 +31,7 @@ build
 .env.local
 .env.*.local
 
-# Assets
-public/assets
+# Assets - Keep tracked
 
 # Temporary files
 *.tmp
