@@ -87,7 +87,7 @@ export default function Portfolio() {
       });
 
       // Horizontal scroll for skills
-      const skillsSection = document.querySelector('.skills-section');
+      const skillsSection = document.querySelector('.skills-section') as HTMLElement;
       const skillsCards = gsap.utils.toArray('.skill-card');
       if (skillsSection && skillsCards.length > 0) {
         gsap.to(skillsCards, {
@@ -119,7 +119,7 @@ export default function Portfolio() {
       });
 
       // Parallax effect on project images
-      gsap.utils.toArray('.project-image').forEach((img) => {
+      gsap.utils.toArray<Element>('.project-image').forEach((img) => {
         gsap.to(img, {
           yPercent: -30,
           ease: 'none',
@@ -133,7 +133,7 @@ export default function Portfolio() {
       });
 
       // Hover-like effect on scroll
-      gsap.utils.toArray('.project-card').forEach((card) => {
+      gsap.utils.toArray<Element>('.project-card').forEach((card) => {
         gsap.to(card, {
           scale: 1.05,
           boxShadow: '0 20px 40px rgba(0,0,0,0.3)',
