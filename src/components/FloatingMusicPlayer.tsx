@@ -10,13 +10,32 @@ export const FloatingMusicPlayer = () => {
   const intervalRef = useRef<TimerId>(null);
 
   useEffect(() => {
-    // Auto-play on mount
+    // Auto-play on mount with better error handling
     const audio = audioRef.current;
     if (audio) {
-      audio.play().catch(err => {
-        console.log('Auto-play prevented by browser:', err);
-        setIsPlaying(false);
-      });
+      // Attempt autoplay with multiple strategies
+      const attemptAutoplay = async () => {
+        try {
+          // First attempt: direct play
+          await audio.play();
+          setIsPlaying(true);
+        } catch (err) {
+          console.log('Auto-play prevented, trying alternative approach:', err);
+
+          // Second attempt: after a small delay
+          setTimeout(async () => {
+            try {
+              await audio.play();
+              setIsPlaying(true);
+            } catch (retryErr) {
+              console.log('Auto-play still prevented, user interaction required:', retryErr);
+              setIsPlaying(false);
+            }
+          }, 1000);
+        }
+      };
+
+      attemptAutoplay();
     }
 
     return () => {
@@ -31,7 +50,10 @@ export const FloatingMusicPlayer = () => {
     if (!audio) return;
 
     if (isPlaying) {
-      audio.play();
+      audio.play().catch(err => {
+        console.log('Play prevented:', err);
+        setIsPlaying(false);
+      });
       intervalRef.current = setInterval(() => {
         if (audio.duration) {
           setProgress((audio.currentTime / audio.duration) * 100);
@@ -110,7 +132,15 @@ export const FloatingMusicPlayer = () => {
           ref={audioRef}
           src="/assets/music/unlasting.mp3"
           loop
+          preload="auto"
           onError={() => console.log('Audio loading error')}
+          onCanPlayThrough={() => {
+            // Try to play when audio is ready
+            const audio = audioRef.current;
+            if (audio && isPlaying) {
+              audio.play().catch(err => console.log('Auto-play prevented:', err));
+            }
+          }}
         />
       </div>
     </div>
