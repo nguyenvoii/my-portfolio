@@ -95,10 +95,6 @@ export const FloatingMusicPlayer = () => {
     setIsPlaying(!isPlaying);
   };
 
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
-
   return (
     <div className="fixed bottom-6 right-6 z-50">
       <div
