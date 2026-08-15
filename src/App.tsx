@@ -518,19 +518,38 @@ function App() {
                 </div>
               </div>
 
-              {/* Current Focus */}
+              {/* My Gear */}
               <div className="text-center">
-                <h4 className="text-xl font-semibold text-soft-white mb-6">Currently Learning</h4>
-                <div className="flex flex-wrap justify-center gap-4">
-                  {guitarJourney.currentFocus.map((focus, index) => (
-                    <span
-                      key={index}
-                      className="px-5 py-3 bg-aurora/10 border-2 border-aurora/30 rounded-full text-aurora text-sm font-medium hover:bg-aurora/20 transition-colors duration-300"
-                    >
-                      {focus}
-                    </span>
-                  ))}
-                </div>
+                <h4 className="text-xl font-semibold text-soft-white mb-6">My Gear</h4>
+                <a
+                  href="https://equipboard.com/nguyen_voi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block group"
+                >
+                  <div className="px-8 py-4 bg-aurora/10 border-2 border-aurora/30 rounded-full hover:bg-aurora/20 hover:border-aurora/50 transition-all duration-300 group-hover:scale-105">
+                    <div className="flex items-center gap-4">
+                      <span className="text-3xl">🎸</span>
+                      <div className="text-left">
+                        <div className="text-aurora font-semibold text-lg">View My Gear Setup</div>
+                        <div className="text-sm text-gray-400">1 Guitar • 1 Multi-Effects • 7 Accessories</div>
+                      </div>
+                      <svg
+                        className="w-6 h-6 text-aurora group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
               </div>
             </div>
           </div>

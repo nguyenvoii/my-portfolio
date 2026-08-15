@@ -289,7 +289,7 @@ export const MusicSection = () => {
                     <span className="text-2xl">🎸</span>
                     <div className="text-left">
                       <div className="text-aurora font-medium">View My Gear Setup</div>
-                      <div className="text-xs text-gray-400">1 Guitar • 1 Amp • 3 Effects • 5 Accessories</div>
+                      <div className="text-xs text-gray-400">1 Guitar • 1 Multi-Effects • 7 Accessories</div>
                     </div>
                     <svg
                       className="w-5 h-5 text-aurora group-hover:translate-x-1 transition-transform"
