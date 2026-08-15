@@ -108,7 +108,7 @@ export const HeroSection = () => {
         {/* Avatar */}
         <div
           ref={avatarRef}
-          className="absolute -right-20 top-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-0"
+          className="absolute -right-10 sm:-right-16 md:-right-20 top-1/2 -translate-y-1/2 w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] md:w-[400px] md:h-[400px] lg:w-[500px] lg:h-[500px] opacity-0"
         >
           <div className="relative w-full h-full">
             {/* Avatar glow */}
@@ -144,11 +144,11 @@ export const HeroSection = () => {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 max-w-4xl">
+        <div className="relative z-10 max-w-4xl px-4 sm:px-6">
           {/* Main name */}
           <h1
             ref={nameRef}
-            className="text-hero font-display font-bold text-gradient text-glow mb-6 opacity-0"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-hero font-display font-bold text-gradient text-glow mb-4 sm:mb-6 opacity-0"
           >
             {personalInfo.name}
           </h1>
@@ -156,7 +156,7 @@ export const HeroSection = () => {
           {/* Tagline */}
           <p
             ref={taglineRef}
-            className="text-subtitle font-display font-medium text-sky-blue mb-4 opacity-0"
+            className="text-lg sm:text-xl md:text-2xl lg:text-subtitle font-display font-medium text-sky-blue mb-3 sm:mb-4 opacity-0"
           >
             {personalInfo.tagline}
           </p>

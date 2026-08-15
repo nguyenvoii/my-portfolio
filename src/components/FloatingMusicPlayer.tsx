@@ -79,34 +79,34 @@ export const FloatingMusicPlayer = () => {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      <div className="glass-panel px-4 sm:px-6 py-3 sm:py-4 rounded-full border border-aurora/30 aurora-glow hover:border-aurora/60 transition-all duration-300">
-        <div className="flex items-center gap-3 sm:gap-4">
+    <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50">
+      <div className="glass-panel px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 rounded-full border border-aurora/30 aurora-glow hover:border-aurora/60 transition-all duration-300">
+        <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
           {/* Play/Pause Button */}
           <button
             onClick={togglePlay}
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-aurora/20 border-2 border-aurora flex items-center justify-center hover:bg-aurora/30 hover:scale-110 transition-all duration-300 flex-shrink-0"
+            className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-aurora/20 border-2 border-aurora flex items-center justify-center hover:bg-aurora/30 hover:scale-110 transition-all duration-300 flex-shrink-0"
             aria-label={isPlaying ? 'Pause' : 'Play'}
           >
             {isPlaying ? (
-              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-aurora" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-aurora" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
               </svg>
             ) : (
-              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-aurora ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-aurora ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
             )}
           </button>
 
           {/* Song Info */}
-          <div className="text-left flex-shrink-0">
-            <div className="text-xs sm:text-sm font-medium text-soft-white truncate">unlasting</div>
-            <div className="text-xs text-gray-400 truncate">LiSA</div>
+          <div className="text-left flex-shrink-0 min-w-0">
+            <div className="text-[10px] sm:text-xs md:text-sm font-medium text-soft-white truncate">unlasting</div>
+            <div className="text-[10px] sm:text-xs text-gray-400 truncate">LiSA</div>
           </div>
 
           {/* Waveform Animation */}
-          <div className="hidden sm:flex items-end gap-0.5 h-6 sm:h-8 flex-shrink-0">
+          <div className="hidden sm:flex items-end gap-0.5 h-5 sm:h-6 md:h-8 flex-shrink-0">
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
