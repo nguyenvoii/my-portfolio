@@ -117,7 +117,7 @@ export const ProjectsSection = () => {
                 <div className="aspect-video mb-6 bg-midnight/50 rounded-lg overflow-hidden relative">
                   {project.image ? (
                     <img
-                      src={project.image}
+                      src={`${import.meta.env.BASE_URL}${project.image}`}
                       alt={project.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />

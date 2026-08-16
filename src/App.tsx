@@ -349,7 +349,7 @@ function App() {
                   {/* Project Image/Icon */}
                   <div className="aspect-video mb-6 bg-midnight/50 rounded-lg overflow-hidden flex items-center justify-center">
                     {project.image ? (
-                      <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+                      <img src={`${import.meta.env.BASE_URL}${project.image}`} alt={project.title} className="w-full h-full object-cover" />
                     ) : (
                       <div className="text-5xl opacity-20">💻</div>
                     )}
