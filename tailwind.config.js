@@ -20,6 +20,14 @@ export default {
         'deep-space': '#050b14',
         'aurora-glow': '#00d4ff',
         'snow': '#e8f4f8',
+
+        // Aurora gradient system - black to cyan fade
+        'aurora-deep': '#00f5ff',      // Primary aurora cyan
+        'aurora-mid': '#00d4ff',       // Mid-tone aurora
+        'aurora-light': '#7b68ee',     // Soft violet
+        'fade-start': '#0a0a0f',       // Deep black
+        'fade-mid': '#0a1628',         // Midnight blue
+        'fade-end': '#1a2a4a',         // Light blue-black
       },
       fontFamily: {
         display: ['Inter', 'system-ui', 'sans-serif'],

@@ -47,16 +47,22 @@ function App() {
   return (
     <div className="relative min-h-screen bg-midnight">
       {/* Loading State */}
-      {isLoading && <LoadingState />}
+      {isLoading && <LoadingState onComplete={() => setIsLoading(false)} />}
 
       {/* Accessibility hints */}
       <AccessibilityHints />
 
       {/* Advanced Background with aurora and snow */}
-      <AdvancedAuroraBackground />
+      <div className="absolute inset-0">
+        <AdvancedAuroraBackground />
+      </div>
 
-      {/* Navigation - z-index 50 */}
-      <div className="relative z-50">
+      {/* Navigation - z-index 60 (above music player) */}
+      <div
+        className={`relative z-[60] transition-all duration-1000 ease-out delay-100 ${
+          isLoading ? 'opacity-0 -translate-y-4' : 'opacity-100 translate-y-0'
+        }`}
+      >
         <Navigation
           currentSection={currentSection}
           sections={sections}
@@ -64,7 +70,13 @@ function App() {
       </div>
 
       {/* Main Content - z-index 20 (above background and snow) */}
-      <main className="relative z-20" role="main" aria-label="Main content">
+      <main
+        className={`relative z-20 transition-all duration-1000 ease-out ${
+          isLoading ? 'opacity-0 translate-y-8 scale-95' : 'opacity-100 translate-y-0 scale-100'
+        }`}
+        role="main"
+        aria-label="Main content"
+      >
         {/* Hero Section */}
         <section id="section-hero" ref={heroAnimation.ref} className="min-h-screen flex items-center justify-center px-4 sm:px-6 py-12 sm:py-20" aria-labelledby="hero-heading">
           <div className="max-w-7xl mx-auto w-full">

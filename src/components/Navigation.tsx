@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Section } from '../types';
+import avatar from '/assets/avatar.jpg';
 
 interface NavigationProps {
   currentSection: Section;
@@ -7,7 +8,7 @@ interface NavigationProps {
 }
 
 export const Navigation = ({ currentSection, sections }: NavigationProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -18,100 +19,176 @@ export const Navigation = ({ currentSection, sections }: NavigationProps) => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
-    return () => window.removeEventListener('resize', checkMobile);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const sectionLabels: Record<Section, string> = {
-    hero: 'ENTER',
-    about: 'ABOUT',
-    build: 'BUILD',
+    hero: 'HOME',
     projects: 'PROJECTS',
+    build: 'BUILD',
+    about: 'ABOUT',
     music: 'PLAY',
-    explore: 'EXPLORE',
     connect: 'CONNECT',
+    explore: 'EXPLORE',
+  };
+
+  const sectionIcons: Record<Section, string> = {
+    hero: '🏠',
+    projects: '💻',
+    build: '⚡',
+    about: '👋',
+    music: '🎸',
+    connect: '✉️',
+    explore: '🌟',
   };
 
   const scrollToSection = (section: Section) => {
     const element = document.getElementById(`section-${section}`);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
-      setIsOpen(false);
     }
   };
 
-  // Desktop navigation
+  // Desktop navigation - Sticky top navigation bar
   if (!isMobile) {
     return (
-      <nav className="fixed right-6 top-1/2 -translate-y-1/2 z-40">
-        <div className="glass-panel px-4 py-6 flex flex-col gap-6">
-          {sections.filter(s => s !== 'hero').map((section, index) => (
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-midnight/90 backdrop-blur-md border-b border-sky-blue/20 shadow-lg'
+          : 'bg-transparent'
+      }`}>
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo/Avatar */}
+            <div className="flex items-center gap-3">
+              <div
+                className="w-10 h-10 rounded-full overflow-hidden border-2 border-aurora/50 hover:border-aurora transition-all duration-300 hover:scale-105 cursor-pointer aurora-glow"
+                onClick={() => scrollToSection('hero')}
+              >
+                <img
+                  src={avatar}
+                  alt="Nguyễn Voi Avatar"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className="text-lg font-semibold text-soft-white hover:text-aurora transition-colors cursor-pointer" onClick={() => scrollToSection('hero')}>
+                Voi
+              </span>
+            </div>
+
+            {/* Navigation Links */}
+            <div className="flex items-center gap-1">
+              {sections.filter(s => s !== 'hero').map((section) => (
+                <button
+                  key={section}
+                  onClick={() => scrollToSection(section)}
+                  className="relative px-3 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 group"
+                  aria-label={`Navigate to ${sectionLabels[section]}`}
+                >
+                  <span className={`relative z-10 transition-colors duration-300 ${
+                    currentSection === section
+                      ? 'text-aurora'
+                      : 'text-muted-blue group-hover:text-soft-white'
+                  }`}>
+                    {sectionLabels[section]}
+                  </span>
+
+                  {/* Active indicator */}
+                  {currentSection === section && (
+                    <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-aurora rounded-full animate-pulse-soft" />
+                  )}
+
+                  {/* Hover background */}
+                  <div className="absolute inset-0 bg-aurora/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </button>
+              ))}
+            </div>
+
+            {/* Contact CTA */}
             <button
-              key={section}
-              onClick={() => scrollToSection(section)}
-              className="group relative flex items-center gap-3 text-sm font-medium transition-all duration-300 hover:gap-4"
-              aria-label={`Navigate to ${sectionLabels[section]}`}
+              onClick={() => scrollToSection('connect')}
+              className="px-4 py-2 bg-aurora/20 border-2 border-aurora rounded-full text-sm font-medium text-soft-white hover:bg-aurora/30 hover:scale-105 transition-all duration-300 animate-pulse-soft"
             >
-              <span className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                currentSection === section
-                  ? 'bg-aurora scale-125 aurora-glow'
-                  : 'bg-sky-blue/40 group-hover:bg-sky-blue/60'
-              }`} />
-
-              <span className={`opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                currentSection === section ? 'opacity-100' : ''
-              }`}>
-                {String(index + 1).padStart(2, '0')}
-              </span>
-
-              <span className={`text-xs uppercase tracking-wider transition-colors duration-300 ${
-                currentSection === section
-                  ? 'text-aurora'
-                  : 'text-muted-blue group-hover:text-soft-white'
-              }`}>
-                {sectionLabels[section]}
-              </span>
+              Contact
             </button>
-          ))}
+          </div>
+        </div>
+
+        {/* Progress bar */}
+        <div className="h-0.5 bg-sky-blue/20">
+          <div
+            className="h-full bg-gradient-to-r from-aurora via-sky-blue to-aurora transition-all duration-300"
+            style={{
+              width: `${((sections.indexOf(currentSection) + 1) / sections.length) * 100}%`
+            }}
+          />
         </div>
       </nav>
     );
   }
 
-  // Mobile navigation
+  // Mobile navigation - Bottom tab bar (thumb-friendly)
   return (
     <>
-      {/* Mobile menu button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 right-4 z-50 p-3 glass-panel rounded-full interactive"
-        aria-label="Toggle menu"
-        aria-expanded={isOpen}
-      >
-        <div className="w-6 h-5 flex flex-col justify-between">
-          <span className={`w-full h-0.5 bg-soft-white transition-all duration-300 ${isOpen ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`w-full h-0.5 bg-soft-white transition-all duration-300 ${isOpen ? 'opacity-0' : ''}`} />
-          <span className={`w-full h-0.5 bg-soft-white transition-all duration-300 ${isOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-        </div>
-      </button>
-
-      {/* Mobile menu overlay */}
-      <div
-        className={`fixed inset-0 bg-midnight/95 backdrop-blur-lg z-40 transition-all duration-500 ease-in-out ${
-          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        <nav className="h-full flex flex-col justify-center items-center gap-8 px-6">
-          {sections.filter(s => s !== 'hero').map((section, index) => (
+      {/* Mobile bottom navigation */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-midnight/95 backdrop-blur-lg border-t border-sky-blue/20">
+        <div className="flex items-center justify-around h-16 px-2">
+          {sections.map((section) => (
             <button
               key={section}
               onClick={() => scrollToSection(section)}
-              className="text-2xl font-display font-bold text-soft-white hover:text-aurora transition-colors duration-300"
+              className="flex flex-col items-center justify-center gap-1 px-2 py-1 transition-all duration-300 hover:scale-105 relative"
+              aria-label={`Navigate to ${sectionLabels[section]}`}
             >
-              <span className="text-aurora/60 mr-3">{String(index + 1).padStart(2, '0')}</span>
-              {sectionLabels[section]}
+              <div className={`text-lg transition-colors duration-300 ${
+                currentSection === section ? 'text-aurora scale-110' : 'text-muted-blue'
+              }`}>
+                {sectionIcons[section]}
+              </div>
+              <span className={`text-[10px] font-medium transition-colors duration-300 ${
+                currentSection === section ? 'text-aurora' : 'text-muted-blue'
+              }`}>
+                {sectionLabels[section]}
+              </span>
+
+              {/* Active indicator */}
+              {currentSection === section && (
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-aurora rounded-full animate-pulse-soft" />
+              )}
             </button>
           ))}
-        </nav>
+        </div>
+      </nav>
+
+      {/* Mobile top bar */}
+      <div className="fixed top-0 left-0 right-0 z-40 bg-midnight/90 backdrop-blur-md border-b border-sky-blue/20">
+        <div className="flex items-center justify-between px-4 py-3">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-aurora/50">
+              <img
+                src={avatar}
+                alt="Nguyễn Voi Avatar"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <span className="text-sm font-semibold text-soft-white">Voi</span>
+          </div>
+
+          {/* Current section indicator */}
+          <div className="text-xs text-muted-blue">
+            {sectionLabels[currentSection]}
+          </div>
+        </div>
       </div>
     </>
   );

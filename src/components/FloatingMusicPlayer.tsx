@@ -5,46 +5,35 @@ import unlastingMp3 from '/assets/music/unlasting.mp3';
 type TimerId = ReturnType<typeof setInterval> | null;
 
 export const FloatingMusicPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(true); // Auto-play by default
+  const [isPlaying, setIsPlaying] = useState(false); // Start paused, auto-play after loading
   const [progress, setProgress] = useState(0);
+  const [hasStarted, setHasStarted] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const intervalRef = useRef<TimerId>(null);
 
   useEffect(() => {
-    // Auto-play on mount with better error handling
-    const audio = audioRef.current;
-    if (audio) {
-      // Attempt autoplay with multiple strategies
-      const attemptAutoplay = async () => {
+    // Auto-play after website loads (when loading completes)
+    const autoPlayTimer = setTimeout(async () => {
+      const audio = audioRef.current;
+      if (audio && !hasStarted) {
         try {
-          // First attempt: direct play
           await audio.play();
           setIsPlaying(true);
+          setHasStarted(true);
         } catch (err) {
-          console.log('Auto-play prevented, trying alternative approach:', err);
-
-          // Second attempt: after a small delay
-          setTimeout(async () => {
-            try {
-              await audio.play();
-              setIsPlaying(true);
-            } catch (retryErr) {
-              console.log('Auto-play still prevented, user interaction required:', retryErr);
-              setIsPlaying(false);
-            }
-          }, 1000);
+          console.log('Auto-play prevented by browser, waiting for user interaction:', err);
+          setIsPlaying(false);
         }
-      };
-
-      attemptAutoplay();
-    }
+      }
+    }, 2500); // Wait for loading animation to complete
 
     return () => {
+      clearTimeout(autoPlayTimer);
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, []);
+  }, [hasStarted]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -79,52 +68,55 @@ export const FloatingMusicPlayer = () => {
   };
 
   return (
-    <div className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50">
-      <div className="glass-panel px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 rounded-full border border-aurora/30 aurora-glow hover:border-aurora/60 transition-all duration-300">
-        <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
-          {/* Play/Pause Button */}
-          <button
-            onClick={togglePlay}
-            className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full bg-aurora/20 border-2 border-aurora flex items-center justify-center hover:bg-aurora/30 hover:scale-110 transition-all duration-300 flex-shrink-0"
-            aria-label={isPlaying ? 'Pause' : 'Play'}
-          >
-            {isPlaying ? (
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-aurora" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-              </svg>
-            ) : (
-              <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5 text-aurora ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            )}
-          </button>
+    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
+      <div className="glass-panel p-3 sm:p-4 rounded-xl border border-aurora/30 hover:border-aurora/50 transition-all duration-300 hover:scale-105">
+        <div className="flex flex-col gap-2">
+          {/* Main player row */}
+          <div className="flex items-center gap-3">
+            {/* Play/Pause Button */}
+            <button
+              onClick={togglePlay}
+              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-aurora/20 border-2 border-aurora flex items-center justify-center hover:bg-aurora/30 hover:scale-110 transition-all duration-300 flex-shrink-0"
+              aria-label={isPlaying ? 'Pause' : 'Play'}
+            >
+              {isPlaying ? (
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-aurora" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                </svg>
+              ) : (
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-aurora ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              )}
+            </button>
 
-          {/* Song Info */}
-          <div className="text-left flex-shrink-0 min-w-0">
-            <div className="text-[10px] sm:text-xs md:text-sm font-medium text-soft-white truncate">unlasting</div>
-            <div className="text-[10px] sm:text-xs text-gray-400 truncate">LiSA</div>
+            {/* Song Info */}
+            <div className="text-left flex-shrink-0 min-w-0">
+              <div className="text-sm sm:text-base font-medium text-soft-white truncate">unlasting</div>
+              <div className="text-xs text-gray-400 truncate">LiSA • Sword Art Online</div>
+            </div>
           </div>
 
-          {/* Waveform Animation */}
-          <div className="hidden sm:flex items-end gap-0.5 h-5 sm:h-6 md:h-8 flex-shrink-0">
-            {[...Array(8)].map((_, i) => (
-              <div
-                key={i}
-                className="w-1 bg-aurora/60 rounded-full transition-all duration-150 ease-out"
-                style={{
-                  height: isPlaying ? `${Math.random() * 100}%` : '20%',
-                  transitionDuration: `${150 + Math.random() * 100}ms`,
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Progress Bar */}
-          <div className="w-16 sm:w-24 h-1 bg-midnight/50 rounded-full overflow-hidden flex-shrink-0">
+          {/* Progress bar row */}
+          <div className="h-1 bg-midnight/50 rounded-full overflow-hidden">
             <div
               className="h-full bg-gradient-to-r from-aurora to-sky-blue transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
+          </div>
+
+          {/* Waveform Animation */}
+          <div className="flex items-end gap-1 h-6 justify-center">
+            {[...Array(12)].map((_, i) => (
+              <div
+                key={i}
+                className="w-1 bg-aurora/60 rounded-full transition-all duration-150 ease-out"
+                style={{
+                  height: isPlaying ? `${30 + Math.random() * 70}%` : '20%',
+                  transitionDuration: `${100 + Math.random() * 150}ms`,
+                }}
+              />
+            ))}
           </div>
         </div>
 
