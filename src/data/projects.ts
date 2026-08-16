@@ -4,16 +4,25 @@
 import { Project } from '../types';
 
 export const projects: Project[] = [
-  // Start with placeholder structure - add real projects as they are completed
-  // This architecture allows easy addition of new projects
-
+  // Graduation Project - Featured
   {
-    id: 'project-1',
-    title: 'Academic Project', // Replace with actual project name
-    description: 'School project completed during FPT Polytechnic coursework.', // Update with real description
-    technologies: ['JavaScript', 'HTML', 'CSS'], // Add actual technologies used
+    id: 'hotel-management',
+    title: 'Hotel Management System',
+    description: 'Comprehensive web-based hotel management solution built as graduation project at FPT College. Features room booking, customer management, billing, and admin dashboard for efficient hotel operations.',
+    technologies: ['Java', 'JSP', 'MySQL', 'Servlet', 'HTML/CSS', 'JavaScript'],
     status: 'completed',
-    // Add actual image, github, demo when available
+    featured: true,
+    // Add image after taking screenshots
+    // image: '/projects/hotel-management.png',
+  },
+
+  // Placeholder for other academic projects
+  {
+    id: 'academic-placeholder',
+    title: 'More Projects Coming Soon',
+    description: 'Continuing to build and learn through hands-on projects at FPT Polytechnic.',
+    technologies: ['Learning', 'Building', 'Growing'],
+    status: 'learning',
   },
 
   // Future project template:
