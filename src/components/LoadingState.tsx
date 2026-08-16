@@ -8,30 +8,6 @@ export const LoadingState = ({ onComplete }: LoadingStateProps) => {
   const [progress, setProgress] = useState(0);
   const [isExiting, setIsExiting] = useState(false);
 
-  // Color interpolation helper
-  const lerpColor = (color1: string, color2: string, t: number): string => {
-    const c1 = hexToRgb(color1);
-    const c2 = hexToRgb(color2);
-    if (!c1 || !c2) return color1;
-
-    const r = Math.round(c1.r + (c2.r - c1.r) * t);
-    const g = Math.round(c1.g + (c2.g - c1.g) * t);
-    const b = Math.round(c1.b + (c2.b - c1.b) * t);
-
-    return `rgb(${r}, ${g}, ${b})`;
-  };
-
-  const hexToRgb = (hex: string): { r: number; g: number; b: number } | null => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result
-      ? {
-          r: parseInt(result[1], 16),
-          g: parseInt(result[2], 16),
-          b: parseInt(result[3], 16)
-        }
-      : null;
-  };
-
   useEffect(() => {
     let startTime = Date.now();
     let rafId: number;
@@ -67,13 +43,6 @@ export const LoadingState = ({ onComplete }: LoadingStateProps) => {
       hasReached100 = true; // Prevent any pending callbacks
     };
   }, [onComplete]);
-
-  // Calculate dynamic background gradient based on progress
-  const bgGradient = `linear-gradient(180deg,
-    ${lerpColor('#0a0a0f', '#0a1628', Math.min(progress * 0.3 / 100, 1))} 0%,
-    ${lerpColor('#0a1628', '#1a2a4a', Math.min(progress * 0.6 / 100, 1))} 50%,
-    ${lerpColor('#1a2a4a', '#00f5ff', Math.min(progress * 0.4 / 100, 1))} 100%
-  )`;
 
   // Aurora pulse effect based on progress
   const auroraPulse = Math.sin((progress / 100) * Math.PI) * 0.8;
