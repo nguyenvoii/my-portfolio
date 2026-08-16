@@ -56,7 +56,7 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
       <div className="absolute inset-0 backdrop-blur-md bg-midnight/70" />
 
       <div
-        className={`relative w-full max-w-7xl max-h-[90vh] overflow-hidden glass-panel rounded-2xl border-2 border-aurora/50 shadow-2xl ${
+        className={`relative w-full max-w-7xl h-[90vh] overflow-hidden glass-panel rounded-2xl border-2 border-aurora/50 shadow-2xl ${
           isClosing ? 'animate-modal-panel-out' : 'animate-modal-panel-in'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -70,8 +70,8 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
           </svg>
         </button>
 
-        <div className="flex flex-col lg:flex-row h-full">
-          <div className="lg:w-2/5 p-8 bg-midnight/30">
+        <div className="flex flex-col lg:flex-row h-full min-h-0">
+          <div className="lg:w-2/5 p-8 bg-midnight/30 overflow-y-auto min-h-0">
             <div className="space-y-6">
               <div className="glass-panel p-6 border border-aurora/40">
                 <div className="aspect-[16/9] mb-6 bg-midnight/50 rounded-lg overflow-hidden">
@@ -117,7 +117,7 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
             </div>
           </div>
 
-          <div className="lg:w-3/5 p-8 overflow-y-auto">
+          <div className="lg:w-3/5 p-8 overflow-y-auto min-h-0">
             <div className="space-y-8">
               <div className="relative aspect-[16/9] bg-midnight/50 rounded-xl overflow-hidden border-2 border-aurora/40">
                 <img

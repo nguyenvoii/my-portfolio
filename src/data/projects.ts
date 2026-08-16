@@ -26,8 +26,8 @@ export const projects: Project[] = [
     ],
     stats: [
       { value: '66', label: 'Java Files' },
-      { value: '8', label: 'DB Tables' },
-      { value: '15+', label: 'Features' },
+      { value: '8', label: 'Features' },
+      { value: '8.5/10', label: 'Defense Score' },
     ],
     features: [
       'Online booking system with room type selection',
@@ -52,8 +52,8 @@ export const projects: Project[] = [
     gallery: ['showroom-1.png', 'showroom-2.png', 'showroom-3.png', 'showroom-4.png'],
     stats: [
       { value: '67', label: 'Java Files' },
-      { value: '19', label: 'DB Tables' },
-      { value: '34', label: 'JSP Views' },
+      { value: '10', label: 'Features' },
+      { value: '8.0/10', label: 'Defense Score' },
     ],
     features: [
       'Vehicle inventory management (models, brands, photos)',
