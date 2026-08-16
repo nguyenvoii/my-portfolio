@@ -11,7 +11,7 @@ export const LoadingState = ({ onComplete }: LoadingStateProps) => {
   useEffect(() => {
     let startTime = Date.now();
     let rafId: number;
-    const minLoadTime = 1500; // 1.5 seconds for faster loading
+    const minLoadTime = 1800; // Slightly longer for better experience
     let hasReached100 = false;
 
     const animate = () => {
@@ -19,16 +19,13 @@ export const LoadingState = ({ onComplete }: LoadingStateProps) => {
       const newProgress = Math.min((elapsed / minLoadTime) * 100, 100);
       setProgress(newProgress);
 
-      // Only start exit when progress reaches exactly 100% and stays there
       if (newProgress >= 100 && !hasReached100) {
         hasReached100 = true;
-        // Wait a moment at 100% then start exit animation
         setTimeout(() => {
           setIsExiting(true);
-          // Complete after exit animation
-          setTimeout(() => onComplete(), 800);
-        }, 400);
-        return; // Stop animation loop
+          setTimeout(() => onComplete(), 600);
+        }, 300);
+        return;
       }
 
       if (newProgress < 100) {
@@ -40,96 +37,105 @@ export const LoadingState = ({ onComplete }: LoadingStateProps) => {
 
     return () => {
       cancelAnimationFrame(rafId);
-      hasReached100 = true; // Prevent any pending callbacks
+      hasReached100 = true;
     };
   }, [onComplete]);
 
-  // Aurora pulse effect based on progress
-  const auroraPulse = Math.sin((progress / 100) * Math.PI) * 0.8;
-  const auroraOpacity = (progress / 100) * 0.6;
+  // Aurora colors based on progress
+  const auroraIntensity = progress / 100;
+  const glowOpacity = Math.min(0.3 + auroraIntensity * 0.4, 0.7);
+
+  // Contextual microcopy based on progress
+  const getLoadingMessage = (prog: number) => {
+    if (prog < 20) return 'Warming up...';
+    if (prog < 40) return 'Loading assets...';
+    if (prog < 60) return 'Building experience...';
+    if (prog < 80) return 'Adding finishing touches...';
+    if (prog < 100) return 'Almost ready...';
+    return 'Welcome! ✨';
+  };
 
   return (
     <div
       className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden ${
         isExiting ? 'opacity-0' : 'opacity-100'
-      } transition-opacity duration-1000 ease-in-out`}
+      } transition-opacity duration-700 ease-out`}
     >
-      {/* Simple elegant background */}
+      {/* Aurora gradient background */}
       <div
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(180deg, #0a0a0f 0%, #0a1628 50%, #1a2a4a 100%)`,
+          background: `radial-gradient(ellipse at center bottom, rgba(0, 245, 255, ${glowOpacity * 0.15}) 0%, rgba(123, 104, 238, ${glowOpacity * 0.1}) 40%, transparent 70%), linear-gradient(180deg, #0a0a0f 0%, #0a1628 100%)`,
         }}
       />
 
-      {/* Single aurora glow effect */}
+      {/* Ambient aurora glow */}
       <div
-        className="absolute w-80 h-80 rounded-full blur-3xl"
+        className="absolute w-[600px] h-[600px] rounded-full blur-[120px]"
         style={{
-          background: `radial-gradient(circle, rgba(0, 245, 255, ${auroraOpacity * 0.4}) 0%, rgba(123, 104, 238, ${auroraOpacity * 0.2}) 50%, transparent 70%)`,
-          opacity: auroraPulse,
-          transform: `scale(${1 + progress * 0.003})`,
-          transition: 'opacity 0.5s ease-out, transform 0.5s ease-out'
+          background: `radial-gradient(circle, rgba(0, 245, 255, ${glowOpacity * 0.2}) 0%, rgba(123, 104, 238, ${glowOpacity * 0.15}) 30%, transparent 70%)`,
+          opacity: auroraIntensity,
+          transform: `scale(${0.8 + auroraIntensity * 0.2})`,
+          transition: 'opacity 0.3s ease-out, transform 0.3s ease-out'
         }}
       />
 
-      {/* Loading Content */}
-      <div className="relative z-10 w-full max-w-sm mx-auto px-6">
-        <div className="text-center space-y-6">
-          {/* Simple title */}
-          <h2 className="text-xl font-medium text-soft-white/90">
-            Loading experience
-          </h2>
+      {/* Main content */}
+      <div className="relative z-10 w-full max-w-md mx-auto px-8">
+        <div className="text-center space-y-8">
+          {/* Brand/Title */}
+          <div className="space-y-3">
+            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-aurora via-sky-blue to-aurora bg-[length:200%_auto] animate-gradient">
+              Loading Portfolio
+            </h1>
+            <p className="text-sm text-gray-400">
+              {getLoadingMessage(progress)}
+            </p>
+          </div>
 
-          {/* Elegant progress circle */}
-          <div className="flex justify-center">
-            <div className="relative w-24 h-24">
-              {/* Background circle */}
-              <div className="absolute inset-0 rounded-full border-2 border-white/5" />
+          {/* Modern progress bar with glow */}
+          <div className="space-y-4">
+            {/* Progress bar container */}
+            <div className="relative h-2 bg-white/5 rounded-full overflow-hidden">
+              {/* Glow effect behind bar */}
+              <div
+                className="absolute inset-0 rounded-full blur-md opacity-50"
+                style={{
+                  background: `linear-gradient(90deg, transparent, rgba(0, 245, 255, ${glowOpacity}), transparent)`,
+                  transform: `scaleX(${progress / 100})`,
+                  transformOrigin: 'left',
+                  transition: 'transform 0.1s linear'
+                }}
+              />
 
-              {/* Progress arc */}
-              <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  fill="none"
-                  stroke="url(#auroraGradient)"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeDasharray={`${progress * 2.83} 283`}
-                  className="transition-all duration-300 ease-out"
-                  style={{
-                    filter: `drop-shadow(0 0 8px rgba(0, 245, 255, ${auroraOpacity * 0.6}))`
-                  }}
-                />
-                <defs>
-                  <linearGradient id="auroraGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#00f5ff" />
-                    <stop offset="50%" stopColor="#7b68ee" />
-                    <stop offset="100%" stopColor="#4a90e2" />
-                  </linearGradient>
-                </defs>
-              </svg>
+              {/* Actual progress bar */}
+              <div
+                className="h-full rounded-full transition-all duration-100 ease-out"
+                style={{
+                  width: `${progress}%`,
+                  background: 'linear-gradient(90deg, #00f5ff, #7b68ee, #4a90e2)',
+                  backgroundSize: '200% 100%',
+                  boxShadow: `0 0 20px rgba(0, 245, 255, ${glowOpacity * 0.8})`
+                }}
+              />
+            </div>
 
-              {/* Percentage in center */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-2xl font-semibold" style={{ color: '#00f5ff' }}>
-                  {Math.round(progress)}%
-                </span>
-              </div>
+            {/* Progress details */}
+            <div className="flex justify-between items-center">
+              <span className="text-xs text-gray-500">
+                Preparing your experience
+              </span>
+              <span className="text-sm font-semibold" style={{ color: '#00f5ff' }}>
+                {Math.round(progress)}%
+              </span>
             </div>
           </div>
 
-          {/* Status message */}
-          <div className="h-6">
-            <span className="text-sm text-gray-400 transition-all duration-300">
-              {progress < 25 && 'Initializing...'}
-              {progress >= 25 && progress < 50 && 'Loading assets...'}
-              {progress >= 50 && progress < 75 && 'Preparing components...'}
-              {progress >= 75 && progress < 100 && 'Almost ready...'}
-              {progress >= 100 && 'Welcome! ✨'}
-            </span>
+          {/* Subtle loading hint */}
+          <div className="pt-4">
+            <p className="text-xs text-gray-600 italic">
+              Building with logic & melody
+            </p>
           </div>
         </div>
       </div>
