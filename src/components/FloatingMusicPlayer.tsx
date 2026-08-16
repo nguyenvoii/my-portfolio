@@ -8,7 +8,6 @@ export const FloatingMusicPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
-  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
     // Auto-play after website loads
@@ -31,66 +30,61 @@ export const FloatingMusicPlayer = () => {
     };
   }, [hasStarted]);
 
-  // Setup Web Audio API for frequency analysis
+  // Setup Web Audio API for frequency analysis - ALWAYS RUN when playing
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio || !hasStarted) return;
+    if (!audio) return;
 
-    let isSetup = false;
+    let animationFrameId: number;
     let isCancelled = false;
 
-    const setupAudioContext = async () => {
-      if (isSetup || isCancelled) return;
+    const startAudioAnalysis = async () => {
+      if (isCancelled || !isPlaying) return;
 
       try {
         const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-        if (!AudioContextClass) {
-          console.log('Web Audio API not supported');
-          return;
-        }
+        if (!AudioContextClass) return;
 
-        // Create or resume audio context
+        // Get or create audio context
         if (!audioContextRef.current) {
           audioContextRef.current = new AudioContextClass();
         }
 
         const audioContext = audioContextRef.current;
 
-        // Resume context if suspended (required for user gesture)
+        // Resume context if needed
         if (audioContext.state === 'suspended') {
           await audioContext.resume();
         }
 
-        // Create analyser
-        const analyser = audioContext.createAnalyser();
-        analyser.fftSize = 64; // Good balance between resolution and performance
-
-        // Check if source already exists
+        // Create analyser if not exists
         if (!analyserRef.current) {
+          const analyser = audioContext.createAnalyser();
+          analyser.fftSize = 64;
+
           try {
             const source = audioContext.createMediaElementSource(audio);
             source.connect(analyser);
             analyser.connect(audioContext.destination);
             analyserRef.current = analyser;
-            isSetup = true;
           } catch (corsError) {
-            console.log('CORS restriction - using simulated waveform:', corsError);
-
-            // Use simulation instead
-            isSetup = true;
+            console.log('CORS restriction, using simulation');
             analyserRef.current = null;
           }
         }
 
         const updateFrequency = () => {
-          if (isCancelled) return;
+          if (isCancelled || !isPlaying) {
+            setFrequencyData([]);
+            return;
+          }
 
-          if (analyserRef.current && isPlaying) {
+          if (analyserRef.current) {
             const bufferLength = analyserRef.current.frequencyBinCount;
             const dataArray = new Uint8Array(bufferLength);
             analyserRef.current.getByteFrequencyData(dataArray);
 
-            // Distribute frequencies evenly across 16 bars
+            // Distribute evenly across 16 bars
             const distributedFrequencies = [];
             const barsPerSection = Math.floor(bufferLength / 16);
 
@@ -98,47 +92,46 @@ export const FloatingMusicPlayer = () => {
               const startIndex = i * barsPerSection;
               let sum = 0;
 
-              // Average frequencies in each section
               for (let j = 0; j < barsPerSection; j++) {
                 sum += dataArray[startIndex + j] || 0;
               }
 
               const average = sum / barsPerSection;
-              // Normalize to 0-100 and boost mid-high frequencies for better visual
               const normalized = (average / 255) * 100;
-              const boosted = Math.min(normalized * 1.2, 100); // 20% boost
+              const boosted = Math.min(normalized * 1.3, 100); // Boost for visibility
               distributedFrequencies.push(boosted);
             }
 
             setFrequencyData(distributedFrequencies);
-          } else if (isPlaying) {
-            // Fallback simulation when CORS blocks
-            const simulated = Array.from({ length: 16 }, () => {
-              const base = Math.random() * 40 + 20;
-              const variation = Math.sin(Date.now() / 200) * 15;
+          } else {
+            // Simulation with smooth animation
+            const time = Date.now() / 150;
+            const simulated = Array.from({ length: 16 }, (_, i) => {
+              const base = 25 + Math.sin(time + i * 0.5) * 20;
+              const variation = Math.sin(time * 2 + i) * 15;
               return Math.max(15, Math.min(base + variation, 85));
             });
             setFrequencyData(simulated);
           }
 
-          animationRef.current = requestAnimationFrame(updateFrequency);
+          animationFrameId = requestAnimationFrame(updateFrequency);
         };
 
         updateFrequency();
       } catch (err) {
-        console.log('Web Audio API setup failed:', err);
+        console.log('Audio analysis error:', err);
       }
     };
 
-    setupAudioContext();
+    startAudioAnalysis();
 
     return () => {
       isCancelled = true;
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
       }
     };
-  }, [hasStarted, isPlaying]);
+  }, [isPlaying, hasStarted]);
 
   useEffect(() => {
     const audio = audioRef.current;
