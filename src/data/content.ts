@@ -95,6 +95,13 @@ export const personalInfo = {
     field: 'Information Technology - Software Development',
     period: '2024–2027',
     status: 'Current Student',
+    graduationProject: {
+      title: 'Hotel Management System',
+      institution: 'FPT College - Phổ thông Cao đẳng FPT',
+      description: 'Graduation project - Comprehensive hotel management solution',
+      path: 'C:\\Users\\ADMIN\\Downloads\\Quan_Ly_Khach_San\\checktest\\Quan_Ly_Khach_Sann',
+      technologies: ['Java', 'JSP', 'MySQL', 'Servlet', 'HTML/CSS/JavaScript'],
+    },
   },
 
   english: {

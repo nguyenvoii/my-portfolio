@@ -66,4 +66,11 @@ export interface Education {
   status: string;
   level?: string;
   url?: string;
+  graduationProject?: {
+    title: string;
+    institution: string;
+    description: string;
+    path: string;
+    technologies: string[];
+  };
 }

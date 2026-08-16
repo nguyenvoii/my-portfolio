@@ -47,34 +47,34 @@ export const FloatingMusicPlayer = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-40">
-      <div className="glass-panel p-2.5 rounded-xl border border-aurora/20 hover:border-aurora/40 transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-md">
-        <div className="flex items-center gap-2.5">
-          {/* Play/Pause Button - Compact */}
+      <div className="glass-panel px-4 py-3 rounded-xl border border-aurora/20 hover:border-aurora/40 transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          {/* Play/Pause Button */}
           <button
             onClick={togglePlay}
-            className="w-7 h-7 rounded-lg bg-aurora/15 border border-aurora/30 flex items-center justify-center hover:bg-aurora/25 hover:border-aurora/50 transition-all duration-300 flex-shrink-0"
+            className="w-9 h-9 rounded-lg bg-aurora/15 border border-aurora/30 flex items-center justify-center hover:bg-aurora/25 hover:border-aurora/50 transition-all duration-300 flex-shrink-0"
             aria-label={isPlaying ? 'Pause' : 'Play'}
           >
             {isPlaying ? (
-              <svg className="w-2.5 h-2.5 text-aurora" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 text-aurora" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
               </svg>
             ) : (
-              <svg className="w-2.5 h-2.5 text-aurora ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 text-aurora ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
             )}
           </button>
 
-          {/* Song Info - Minimal */}
+          {/* Song Info */}
           <div className="text-left min-w-0">
-            <div className="text-[10px] font-medium text-soft-white truncate leading-tight">unlasting</div>
-            <div className="text-[8px] text-gray-500 truncate leading-tight">LiSA</div>
+            <div className="text-xs font-medium text-soft-white truncate leading-tight">unlasting</div>
+            <div className="text-[9px] text-gray-400 truncate leading-tight">LiSA • SAO</div>
           </div>
 
-          {/* Compact Waveform */}
-          <div className="flex items-end gap-0.5 h-3">
-            {[...Array(5)].map((_, i) => (
+          {/* Waveform */}
+          <div className="flex items-end gap-0.5 h-4">
+            {[...Array(6)].map((_, i) => (
               <div
                 key={i}
                 className="w-0.5 bg-aurora/50 rounded-full transition-all duration-150 ease-out"

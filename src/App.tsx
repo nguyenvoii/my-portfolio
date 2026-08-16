@@ -179,10 +179,7 @@ function App() {
 
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 md:gap-5">
                   {/* Education - IT */}
-                  <a
-                    href="https://fpt.edu.vn/"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <div
                     className="group p-3 sm:p-4 md:p-6 rounded-lg bg-midnight/50 hover:bg-midnight/70 border border-sky-blue/20 hover:border-sky-blue/40 transition-all duration-300 interactive"
                   >
                     <div className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-4 rounded-full bg-sky-blue/20 flex items-center justify-center group-hover:bg-sky-blue/30 transition-colors">
@@ -196,8 +193,21 @@ function App() {
                       <p className="text-[10px] sm:text-xs text-gray-300 line-clamp-1">{personalInfo.education.institution}</p>
                       <p className="text-[10px] sm:text-xs text-gray-400">{personalInfo.education.period}</p>
                       <p className="text-[10px] sm:text-xs text-emerald-400 font-medium">{personalInfo.education.status}</p>
+
+                      {/* Graduation Project */}
+                      {personalInfo.education.graduationProject && (
+                        <div className="mt-3 pt-3 border-t border-sky-blue/10">
+                          <p className="text-[9px] sm:text-[10px] text-sky-blue/70 font-semibold mb-1">GRADUATION PROJECT</p>
+                          <p className="text-[10px] sm:text-[11px] font-medium text-soft-white line-clamp-2">
+                            {personalInfo.education.graduationProject.title}
+                          </p>
+                          <p className="text-[8px] sm:text-[9px] text-gray-400 line-clamp-1 mt-0.5">
+                            {personalInfo.education.graduationProject.institution}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  </a>
+                  </div>
 
                   {/* English - DOL */}
                   <a
