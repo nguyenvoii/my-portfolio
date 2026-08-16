@@ -2,12 +2,15 @@ import { useState, useRef, useEffect } from 'react';
 import unlastingMp3 from '/assets/music/unlasting.mp3';
 
 export const FloatingMusicPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false); // Start paused, auto-play after loading
+  const [isPlaying, setIsPlaying] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  const [frequencyData, setFrequencyData] = useState<number[]>([]);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Auto-play after website loads (when loading completes)
+    // Auto-play after website loads
     const autoPlayTimer = setTimeout(async () => {
       const audio = audioRef.current;
       if (audio && !hasStarted) {
@@ -20,12 +23,60 @@ export const FloatingMusicPlayer = () => {
           setIsPlaying(false);
         }
       }
-    }, 2500); // Wait for loading animation to complete
+    }, 2500);
 
     return () => {
       clearTimeout(autoPlayTimer);
     };
   }, [hasStarted]);
+
+  // Setup Web Audio API for frequency analysis
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    // Initialize audio context and analyser
+    const setupAudioContext = async () => {
+      try {
+        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const analyser = audioContext.createAnalyser();
+        analyser.fftSize = 64; // Small FFT size for performance
+
+        const source = audioContext.createMediaElementSource(audio);
+        source.connect(analyser);
+        analyser.connect(audioContext.destination);
+
+        analyserRef.current = analyser;
+
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+
+        const updateFrequency = () => {
+          if (analyserRef.current && isPlaying) {
+            analyserRef.current.getByteFrequencyData(dataArray);
+
+            // Convert to array and normalize to 0-100 range
+            const frequencies = Array.from(dataArray).map(value => (value / 255) * 100);
+            setFrequencyData(frequencies);
+          }
+
+          animationRef.current = requestAnimationFrame(updateFrequency);
+        };
+
+        updateFrequency();
+      } catch (err) {
+        console.log('Web Audio API setup failed:', err);
+      }
+    };
+
+    setupAudioContext();
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [isPlaying]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -47,8 +98,8 @@ export const FloatingMusicPlayer = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-40">
-      <div className="glass-panel px-4 py-3 rounded-xl border border-aurora/20 hover:border-aurora/40 transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-md">
-        <div className="flex items-center gap-3">
+      <div className="glass-panel px-5 py-3 rounded-xl border border-aurora/20 hover:border-aurora/40 transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-md">
+        <div className="flex items-center gap-4">
           {/* Play/Pause Button */}
           <button
             onClick={togglePlay}
@@ -72,18 +123,29 @@ export const FloatingMusicPlayer = () => {
             <div className="text-[9px] text-gray-400 truncate leading-tight">LiSA • SAO</div>
           </div>
 
-          {/* Waveform */}
+          {/* Audio-Reactive Waveform */}
           <div className="flex items-end gap-0.5 h-4">
-            {[...Array(6)].map((_, i) => (
-              <div
-                key={i}
-                className="w-0.5 bg-aurora/50 rounded-full transition-all duration-150 ease-out"
-                style={{
-                  height: isPlaying ? `${25 + Math.random() * 75}%` : '15%',
-                  transitionDuration: `${80 + Math.random() * 120}ms`,
-                }}
-              />
-            ))}
+            {frequencyData.length > 0 ? (
+              frequencyData.slice(0, 12).map((frequency, i) => (
+                <div
+                  key={i}
+                  className="w-0.5 bg-aurora/50 rounded-full transition-all duration-75 ease-out"
+                  style={{
+                    height: `${Math.max(15, frequency)}%`,
+                    backgroundColor: frequency > 60 ? '#00f5ff' : 'rgba(0, 245, 255, 0.5)',
+                  }}
+                />
+              ))
+            ) : (
+              // Static waveform when not playing
+              [...Array(12)].map((_, i) => (
+                <div
+                  key={i}
+                  className="w-0.5 bg-aurora/50 rounded-full"
+                  style={{ height: '15%' }}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>
@@ -94,9 +156,9 @@ export const FloatingMusicPlayer = () => {
         src={unlastingMp3}
         loop
         preload="auto"
+        crossOrigin="anonymous"
         onError={() => console.log('Audio loading error')}
         onCanPlayThrough={() => {
-          // Try to play when audio is ready
           const audio = audioRef.current;
           if (audio && isPlaying) {
             audio.play().catch(err => console.log('Auto-play prevented:', err));
