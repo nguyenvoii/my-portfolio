@@ -13,6 +13,10 @@ export interface Project {
   github?: string;
   demo?: string;
   featured?: boolean;
+  gallery?: string[];
+  stats?: { value: string; label: string }[];
+  features?: string[];
+  dbTables?: string[];
 }
 
 export interface Artist {
