@@ -378,4 +378,28 @@
       transform: translateX(3%) translateY(-3%) rotate(3deg) scale(1.05);
     }
   }
+
+  /* Aurora Cup Filling Animation */
+  @keyframes fill {
+    0% {
+      background-position: 0 80px;
+    }
+    100% {
+      background-position: 0 0;
+    }
+  }
+
+  @keyframes steam {
+    0% {
+      opacity: 0;
+      transform: translateY(0);
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+  }
 }

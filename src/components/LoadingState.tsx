@@ -170,10 +170,89 @@ export const LoadingState = ({ onComplete }: LoadingStateProps) => {
         </div>
 
         {/* Loading Text */}
-        <div className="text-center space-y-6">
+        <div className="text-center space-y-8">
           <h2 className="text-2xl font-semibold" style={{ color: '#f8f9fa' }}>
             Getting things ready...
           </h2>
+
+          {/* Aurora Energy Cup */}
+          <div className="flex justify-center">
+            <div className="relative">
+              {/* Steam Effects */}
+              <div className="steam-effect" style={{
+                position: 'absolute',
+                width: '8px',
+                height: '25px',
+                background: 'linear-gradient(to top, rgba(0, 245, 255, 0.8), transparent)',
+                borderRadius: '10px',
+                top: '-35px',
+                left: '15px',
+                animation: 'steam 1.5s linear infinite',
+                animationDelay: '0.2s',
+                filter: 'blur(2px)',
+                opacity: auroraOpacity
+              }} />
+              <div className="steam-effect" style={{
+                position: 'absolute',
+                width: '8px',
+                height: '25px',
+                background: 'linear-gradient(to top, rgba(123, 104, 238, 0.8), transparent)',
+                borderRadius: '10px',
+                top: '-35px',
+                left: '35px',
+                animation: 'steam 1.5s linear infinite',
+                animationDelay: '0.5s',
+                filter: 'blur(2px)',
+                opacity: auroraOpacity
+              }} />
+              <div className="steam-effect" style={{
+                position: 'absolute',
+                width: '8px',
+                height: '25px',
+                background: 'linear-gradient(to top, rgba(74, 144, 226, 0.8), transparent)',
+                borderRadius: '10px',
+                top: '-35px',
+                left: '55px',
+                animation: 'steam 1.5s linear infinite',
+                animationDelay: '0.8s',
+                filter: 'blur(2px)',
+                opacity: auroraOpacity
+              }} />
+
+              {/* Energy Cup */}
+              <div
+                className="cup-container"
+                style={{
+                  position: 'relative',
+                  width: '80px',
+                  height: '70px',
+                  border: '4px solid #00f5ff',
+                  borderTop: '0',
+                  borderRadius: '0 0 20px 20px',
+                  background: `linear-gradient(180deg, #7b68ee 0%, #4a90e2 50%, #00f5ff 100%)`,
+                  backgroundSize: '100% 200%',
+                  backgroundPosition: `0 ${80 - (progress * 0.8)}px`,
+                  boxShadow: `0 0 20px rgba(0, 245, 255, ${auroraOpacity * 0.5})`,
+                  transition: 'background-position 0.1s linear'
+                }}
+              >
+                {/* Cup Handle */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: '-25px',
+                    top: '10px',
+                    width: '25px',
+                    height: '30px',
+                    border: '4px solid #00f5ff',
+                    borderLeft: '0',
+                    borderRadius: '0 15px 15px 0',
+                    boxShadow: '0 0 10px rgba(0, 245, 255, 0.3)'
+                  }}
+                />
+              </div>
+            </div>
+          </div>
 
           {/* Progress Bar */}
           <div className="relative">
