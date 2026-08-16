@@ -7,6 +7,7 @@ export const FloatingMusicPlayer = () => {
   const [frequencyData, setFrequencyData] = useState<number[]>([]);
   const audioRef = useRef<HTMLAudioElement>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
   const animationRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -33,12 +34,13 @@ export const FloatingMusicPlayer = () => {
   // Setup Web Audio API for frequency analysis
   useEffect(() => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !hasStarted) return;
 
     let isSetup = false;
+    let isCancelled = false;
 
     const setupAudioContext = async () => {
-      if (isSetup) return;
+      if (isSetup || isCancelled) return;
 
       try {
         const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
@@ -47,65 +49,91 @@ export const FloatingMusicPlayer = () => {
           return;
         }
 
-        const audioContext = new AudioContextClass();
+        // Create or resume audio context
+        if (!audioContextRef.current) {
+          audioContextRef.current = new AudioContextClass();
+        }
+
+        const audioContext = audioContextRef.current;
+
+        // Resume context if suspended (required for user gesture)
+        if (audioContext.state === 'suspended') {
+          await audioContext.resume();
+        }
 
         // Create analyser
         const analyser = audioContext.createAnalyser();
-        analyser.fftSize = 128; // Higher for better resolution
+        analyser.fftSize = 64; // Good balance between resolution and performance
 
-        // Connect audio element to analyser and destination
-        try {
-          const source = audioContext.createMediaElementSource(audio);
-          source.connect(analyser);
-          analyser.connect(audioContext.destination);
-          analyserRef.current = analyser;
-          isSetup = true;
+        // Check if source already exists
+        if (!analyserRef.current) {
+          try {
+            const source = audioContext.createMediaElementSource(audio);
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+            analyserRef.current = analyser;
+            isSetup = true;
+          } catch (corsError) {
+            console.log('CORS restriction - using simulated waveform:', corsError);
 
-          const bufferLength = analyser.frequencyBinCount;
-          const dataArray = new Uint8Array(bufferLength);
-
-          const updateFrequency = () => {
-            if (analyserRef.current && isPlaying) {
-              analyserRef.current.getByteFrequencyData(dataArray);
-
-              // Convert to array and normalize to 0-100 range
-              const frequencies = Array.from(dataArray).map(value => (value / 255) * 100);
-              setFrequencyData(frequencies);
-            }
-
-            animationRef.current = requestAnimationFrame(updateFrequency);
-          };
-
-          updateFrequency();
-        } catch (corsError) {
-          console.log('CORS restriction - using simulated waveform:', corsError);
-
-          // Fall back to simulated waveform based on playback
-          const simulateWaveform = () => {
-            if (isPlaying && audio.currentTime > 0) {
-              // Simulate frequency data based on time
-              const simulated = Array.from({ length: 32 }, () => {
-                return Math.random() * 60 + 20; // Random values 20-80%
-              });
-              setFrequencyData(simulated);
-            }
-
-            animationRef.current = requestAnimationFrame(simulateWaveform);
-          };
-
-          simulateWaveform();
+            // Use simulation instead
+            isSetup = true;
+            analyserRef.current = null;
+          }
         }
+
+        const updateFrequency = () => {
+          if (isCancelled) return;
+
+          if (analyserRef.current && isPlaying) {
+            const bufferLength = analyserRef.current.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyserRef.current.getByteFrequencyData(dataArray);
+
+            // Distribute frequencies evenly across 16 bars
+            const distributedFrequencies = [];
+            const barsPerSection = Math.floor(bufferLength / 16);
+
+            for (let i = 0; i < 16; i++) {
+              const startIndex = i * barsPerSection;
+              let sum = 0;
+
+              // Average frequencies in each section
+              for (let j = 0; j < barsPerSection; j++) {
+                sum += dataArray[startIndex + j] || 0;
+              }
+
+              const average = sum / barsPerSection;
+              // Normalize to 0-100 and boost mid-high frequencies for better visual
+              const normalized = (average / 255) * 100;
+              const boosted = Math.min(normalized * 1.2, 100); // 20% boost
+              distributedFrequencies.push(boosted);
+            }
+
+            setFrequencyData(distributedFrequencies);
+          } else if (isPlaying) {
+            // Fallback simulation when CORS blocks
+            const simulated = Array.from({ length: 16 }, () => {
+              const base = Math.random() * 40 + 20;
+              const variation = Math.sin(Date.now() / 200) * 15;
+              return Math.max(15, Math.min(base + variation, 85));
+            });
+            setFrequencyData(simulated);
+          }
+
+          animationRef.current = requestAnimationFrame(updateFrequency);
+        };
+
+        updateFrequency();
       } catch (err) {
         console.log('Web Audio API setup failed:', err);
       }
     };
 
-    // Setup on first play
-    if (hasStarted && !analyserRef.current) {
-      setupAudioContext();
-    }
+    setupAudioContext();
 
     return () => {
+      isCancelled = true;
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
@@ -127,6 +155,9 @@ export const FloatingMusicPlayer = () => {
   }, [isPlaying]);
 
   const togglePlay = () => {
+    if (!hasStarted) {
+      setHasStarted(true);
+    }
     setIsPlaying(!isPlaying);
   };
 
@@ -157,17 +188,18 @@ export const FloatingMusicPlayer = () => {
             <div className="text-[10px] text-gray-400 truncate leading-tight">LiSA • SAO</div>
           </div>
 
-          {/* Audio-Reactive Waveform - Larger */}
+          {/* Audio-Reactive Waveform - Evenly Distributed */}
           <div className="flex items-end gap-1 h-6">
-            {frequencyData.length > 0 ? (
-              frequencyData.slice(0, 16).map((frequency, i) => (
+            {frequencyData.length > 0 && isPlaying ? (
+              frequencyData.map((frequency, i) => (
                 <div
                   key={i}
-                  className="w-1 bg-aurora/50 rounded-full transition-all duration-75 ease-out"
+                  className="w-1 rounded-full transition-all duration-75 ease-out"
                   style={{
                     height: `${Math.max(20, frequency)}%`,
                     backgroundColor: frequency > 60 ? '#00f5ff' : 'rgba(0, 245, 255, 0.6)',
-                    boxShadow: frequency > 70 ? '0 0 8px rgba(0, 245, 255, 0.8)' : 'none'
+                    boxShadow: frequency > 70 ? '0 0 8px rgba(0, 245, 255, 0.8)' : 'none',
+                    opacity: 0.8 + (frequency / 500) // Subtle opacity variation
                   }}
                 />
               ))
@@ -177,7 +209,10 @@ export const FloatingMusicPlayer = () => {
                 <div
                   key={i}
                   className="w-1 bg-aurora/40 rounded-full"
-                  style={{ height: '20%' }}
+                  style={{
+                    height: '20%',
+                    opacity: 0.5
+                  }}
                 />
               ))
             )}
