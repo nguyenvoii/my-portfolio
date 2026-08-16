@@ -4,6 +4,7 @@ import { FloatingMusicPlayer } from './components/FloatingMusicPlayer';
 import { AdvancedAuroraBackground } from './components/AdvancedAuroraBackground';
 import { AccessibilityHints } from './components/AccessibilityHints';
 import { LoadingState } from './components/LoadingState';
+import { ProjectModal } from './components/ProjectModal';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 import { useScrollSpy } from './hooks/useScrollSpy';
 import { personalInfo, skills, socialLinks, guitarJourney, hobbies } from './data/content';
@@ -17,6 +18,8 @@ function App() {
   const sections: Section[] = ['hero', 'about', 'build', 'projects', 'music', 'explore', 'connect'];
   const [currentSection, setCurrentSection] = useState<Section>('hero');
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Auto-detect current section on scroll
   const activeSection = useScrollSpy({ sections });
@@ -334,7 +337,11 @@ function App() {
               {projects.map((project, index) => (
                 <div
                   key={project.id}
-                  className={`glass-panel p-8 group hover:border-aurora/40 transition-all duration-500 ${
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setIsModalOpen(true);
+                  }}
+                  className={`glass-panel p-8 group hover:border-aurora/40 transition-all duration-500 cursor-pointer ${
                     projectsAnimation.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
                   }`}
                   style={{ transitionDelay: `${300 + index * 100}ms` }}
@@ -713,6 +720,15 @@ function App() {
       <div className="relative z-100">
         <FloatingMusicPlayer />
       </div>
+
+      {/* Project Modal */}
+      {selectedProject && (
+        <ProjectModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          project={selectedProject}
+        />
+      )}
     </div>
   );
 }
