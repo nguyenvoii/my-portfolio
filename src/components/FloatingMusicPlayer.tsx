@@ -1,10 +1,25 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import unlastingMp3 from '/assets/music/unlasting.mp3';
+
+const BAR_COUNT = 16;
+
+// Bell-curve shaped bars: tall in the middle, short at the edges,
+// each with its own peak/duration/delay so the wave undulates outward
+// from the center instead of every bar pulsing to the same height.
+const waveBars = [...Array(BAR_COUNT)].map((_, i) => {
+  const center = (BAR_COUNT - 1) / 2;
+  const distance = Math.abs(i - center) / center; // 0 = center, 1 = edge
+  const amplitude = 1 - distance * 0.7;
+  const peak = Math.round(35 + amplitude * 55 + Math.random() * 10);
+  const duration = 0.7 + Math.random() * 0.4 + distance * 0.3;
+  const delay = distance * 0.18 + Math.random() * 0.08;
+  return { peak, duration, delay };
+});
 
 export const FloatingMusicPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const animationRef = useRef<number | null>(null);
+  const bars = useMemo(() => waveBars, []);
 
   useEffect(() => {
     // Auto-play after loading
@@ -21,27 +36,6 @@ export const FloatingMusicPlayer = () => {
     }, 2500);
     return () => clearTimeout(timer);
   }, []);
-
-  // Simple CSS animation for waveform
-  useEffect(() => {
-    if (isPlaying) {
-      let frame = 0;
-      const animate = () => {
-        frame++;
-        animationRef.current = requestAnimationFrame(animate);
-      };
-      animate();
-    } else {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    }
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [isPlaying]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -79,14 +73,17 @@ export const FloatingMusicPlayer = () => {
           </div>
 
           <div className="flex items-end gap-1 h-6">
-            {[...Array(16)].map((_, i) => (
+            {bars.map((bar, i) => (
               <div
                 key={i}
                 className="w-1 bg-aurora/60 rounded-full"
                 style={{
-                  animation: isPlaying ? 'wave 1s ease-in-out infinite' : 'none',
-                  animationDelay: `${Math.abs(i - 7.5) * 0.1}s`,
+                  animation: isPlaying
+                    ? `wave ${bar.duration}s ease-in-out infinite`
+                    : 'none',
+                  animationDelay: `${bar.delay}s`,
                   height: '20%',
+                  ['--peak' as string]: `${bar.peak}%`,
                 }}
               />
             ))}
@@ -98,7 +95,7 @@ export const FloatingMusicPlayer = () => {
         {`
           @keyframes wave {
             0%, 100% { height: 20%; opacity: 0.6; }
-            50% { height: ${50 + Math.random() * 40}%; opacity: 1; }
+            50% { height: var(--peak); opacity: 1; }
           }
         `}
       </style>

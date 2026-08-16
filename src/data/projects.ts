@@ -12,8 +12,7 @@ export const projects: Project[] = [
     technologies: ['Java', 'JSP', 'MySQL', 'Servlet', 'HTML/CSS', 'JavaScript'],
     status: 'completed',
     featured: true,
-    image: 'projects/dashboard.png',
-    github: 'https://github.com/nguyenvoii/hotel-management-system',
+    image: 'projects/hotel-logo.png',
   },
 
   // Future project template:

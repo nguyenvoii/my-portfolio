@@ -23,6 +23,33 @@ export const AdvancedAuroraBackground = () => {
     // Check for reduced motion preference
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    // Cached gradients — only depend on viewport size, so they're rebuilt on
+    // resize instead of on every single animation frame (createLinearGradient/
+    // createRadialGradient are expensive and were previously called 60x/sec).
+    let gradientOverlay: CanvasGradient | null = null;
+    let vignetteGradient: CanvasGradient | null = null;
+
+    const buildGradients = (width: number, height: number) => {
+      const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      gradient.addColorStop(0, 'rgba(10, 10, 15, 0.3)');
+      gradient.addColorStop(0.3, 'rgba(10, 22, 40, 0.5)');
+      gradient.addColorStop(0.7, 'rgba(26, 42, 74, 0.7)');
+      gradient.addColorStop(1, 'rgba(10, 22, 40, 0.9)');
+      gradientOverlay = gradient;
+
+      const vignette = ctx.createRadialGradient(
+        width / 2,
+        height / 2,
+        height * 0.3,
+        width / 2,
+        height / 2,
+        height * 0.8
+      );
+      vignette.addColorStop(0, 'rgba(0, 0, 0, 0.2)');
+      vignette.addColorStop(1, 'rgba(0, 0, 0, 0.5)');
+      vignetteGradient = vignette;
+    };
+
     // Set canvas size with proper device pixel ratio scaling
     const resizeCanvas = () => {
       const dpr = window.devicePixelRatio || 1;
@@ -30,7 +57,9 @@ export const AdvancedAuroraBackground = () => {
       canvas.height = window.innerHeight * dpr;
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
+      buildGradients(window.innerWidth, window.innerHeight);
     };
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
@@ -53,37 +82,20 @@ export const AdvancedAuroraBackground = () => {
     let animationFrameId: number;
     let time = 0;
 
-    // Draw DARKER gradient overlay
+    // Draw DARKER gradient overlay (using gradients cached in buildGradients)
     const drawGradientOverlay = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
 
-      // Darker gradient - user requested darker background
-      const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      if (gradientOverlay) {
+        ctx.fillStyle = gradientOverlay;
+        ctx.fillRect(0, 0, width, height);
+      }
 
-      // Start darker (more opacity)
-      gradient.addColorStop(0, 'rgba(10, 10, 15, 0.3)');
-      gradient.addColorStop(0.3, 'rgba(10, 22, 40, 0.5)'); // Darker midnight tint
-      gradient.addColorStop(0.7, 'rgba(26, 42, 74, 0.7)'); // Darker blue-black tint
-      gradient.addColorStop(1, 'rgba(10, 22, 40, 0.9)'); // Much darker at bottom
-
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
-
-      // Add stronger vignette effect for depth
-      const vignetteGradient = ctx.createRadialGradient(
-        width / 2,
-        height / 2,
-        height * 0.3,
-        width / 2,
-        height / 2,
-        height * 0.8
-      );
-      vignetteGradient.addColorStop(0, 'rgba(0, 0, 0, 0.2)'); // Darker center
-      vignetteGradient.addColorStop(1, 'rgba(0, 0, 0, 0.5)'); // Darker edges
-
-      ctx.fillStyle = vignetteGradient;
-      ctx.fillRect(0, 0, width, height);
+      if (vignetteGradient) {
+        ctx.fillStyle = vignetteGradient;
+        ctx.fillRect(0, 0, width, height);
+      }
     };
 
     // Draw snow particles
@@ -139,8 +151,20 @@ export const AdvancedAuroraBackground = () => {
     setIsReady(true);
     animationFrameId = requestAnimationFrame(animate);
 
+    // Pause the loop while the tab isn't visible — nothing is on screen to
+    // see anyway, so this only saves GPU/CPU in background tabs.
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(animationFrameId);
+      } else {
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       cancelAnimationFrame(animationFrameId);
     };
   }, []);

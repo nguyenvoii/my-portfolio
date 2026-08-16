@@ -7,24 +7,38 @@ interface ProjectModalProps {
   project: Project;
 }
 
+const CLOSE_ANIMATION_MS = 200;
+
 export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) => {
   const [currentImage, setCurrentImage] = useState(0);
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
+      setShouldRender(true);
+      setIsClosing(false);
       document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+      return;
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
+
+    if (!shouldRender) return;
+
+    setIsClosing(true);
+    document.body.style.overflow = 'unset';
+    const timer = setTimeout(() => {
+      setShouldRender(false);
+      setIsClosing(false);
+    }, CLOSE_ANIMATION_MS);
+    return () => clearTimeout(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  useEffect(() => () => {
+    document.body.style.overflow = 'unset';
+  }, []);
 
-  const nextImage = () => setCurrentImage((prev) => (prev + 1) % 9);
-  const prevImage = () => setCurrentImage((prev) => (prev - 1 + 9) % 9);
+  if (!shouldRender) return null;
 
   const imageNames = [
     'dashboard.png',
@@ -40,13 +54,17 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
 
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8 animate-fade-in"
+      className={`fixed inset-0 z-[200] flex items-center justify-center p-4 md:p-8 ${
+        isClosing ? 'animate-modal-backdrop-out' : 'animate-modal-backdrop-in'
+      }`}
       onClick={onClose}
     >
       <div className="absolute inset-0 backdrop-blur-md bg-midnight/70" />
 
       <div
-        className="relative w-full max-w-7xl max-h-[90vh] overflow-hidden glass-panel rounded-2xl border-2 border-aurora/50 shadow-2xl animate-slide-up"
+        className={`relative w-full max-w-7xl max-h-[90vh] overflow-hidden glass-panel rounded-2xl border-2 border-aurora/50 shadow-2xl ${
+          isClosing ? 'animate-modal-panel-out' : 'animate-modal-panel-in'
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -64,7 +82,7 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
               <div className="glass-panel p-6 border border-aurora/40">
                 <div className="aspect-[16/9] mb-6 bg-midnight/50 rounded-lg overflow-hidden">
                   <img
-                    src={`${import.meta.env.BASE_URL}projects/${imageNames[currentImage]}`}
+                    src={`${import.meta.env.BASE_URL}${project.image}`}
                     alt={project.title}
                     className="w-full h-full object-cover"
                   />
@@ -113,24 +131,6 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
                   alt="Project screenshot"
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                 />
-
-                <button
-                  onClick={prevImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-aurora/30 backdrop-blur-sm border-2 border-aurora/60 flex items-center justify-center hover:bg-aurora/40 hover:scale-110 transition-all"
-                >
-                  <svg className="w-7 h-7 text-aurora" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-
-                <button
-                  onClick={nextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-aurora/30 backdrop-blur-sm border-2 border-aurora/60 flex items-center justify-center hover:bg-aurora/40 hover:scale-110 transition-all"
-                >
-                  <svg className="w-7 h-7 text-aurora" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
 
                 <div className="absolute top-4 left-4 px-5 py-2.5 rounded-full bg-aurora/30 backdrop-blur-sm border-2 border-aurora/60">
                   <span className="text-sm font-bold text-aurora">
