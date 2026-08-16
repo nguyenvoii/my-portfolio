@@ -8,21 +8,12 @@ export const projects: Project[] = [
   {
     id: 'hotel-management',
     title: 'Hotel Management System',
-    description: 'Comprehensive web-based hotel management solution built as graduation project at FPT College. Features room booking, customer management, billing, and admin dashboard for efficient hotel operations.',
+    description: 'Comprehensive web-based hotel management solution built as graduation project at FPT College. Features room booking, customer management, billing, admin dashboard, employee management, and system logs for efficient hotel operations.',
     technologies: ['Java', 'JSP', 'MySQL', 'Servlet', 'HTML/CSS', 'JavaScript'],
     status: 'completed',
     featured: true,
-    // Add image after taking screenshots
-    // image: '/projects/hotel-management.png',
-  },
-
-  // Placeholder for other academic projects
-  {
-    id: 'academic-placeholder',
-    title: 'More Projects Coming Soon',
-    description: 'Continuing to build and learn through hands-on projects at FPT Polytechnic.',
-    technologies: ['Learning', 'Building', 'Growing'],
-    status: 'learning',
+    image: '/projects/dashboard.png',
+    github: 'https://github.com/nguyenvoii/hotel-management-system',
   },
 
   // Future project template:
