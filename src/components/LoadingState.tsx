@@ -85,183 +85,84 @@ export const LoadingState = ({ onComplete }: LoadingStateProps) => {
         isExiting ? 'opacity-0' : 'opacity-100'
       } transition-opacity duration-1000 ease-in-out`}
     >
-      {/* Dynamic Background with Gradient Fade */}
+      {/* Simple elegant background */}
       <div
         className="absolute inset-0"
         style={{
-          background: bgGradient,
-          transition: 'background 0.3s ease-out'
+          background: `linear-gradient(180deg, #0a0a0f 0%, #0a1628 50%, #1a2a4a 100%)`,
         }}
       />
 
-      {/* Noise overlay for texture */}
+      {/* Single aurora glow effect */}
       <div
-        className="absolute inset-0 opacity-5"
+        className="absolute w-80 h-80 rounded-full blur-3xl"
         style={{
-          backgroundImage: `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAUVBMVEWFhYWDg4N3d3dtbW17e3t1dXWBgYGHh4d5eXlzc3OLi4ubm5uVlZWPj4+NjY19fX2JiYl/f39ra2uRkZGZmZlpaWmXl5dvb29xcXGTk5NnZ2c8TV1mAAAAG3RSTlNAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAvEOwtAAAFVklEQVR4XpWWB67c2BUFb3g557T/hRo9/WUMZHlgr4Bg8Z4qQgQJlHI4A8SzFVrapvmTF9O7dmYRFZ60YiBhJRCgh1FYhiLAmdvX0CzTOpNE77ME0Zty/nWWzchDtiqrmQDeuv3powQ5ta2eN0FY0InkqDD73lT9c9lEzwUNqgFHs9VQce3TVClFCQrSTfOiYkVJQBmpbq2L6iZavPnAPcoU0dSw0SUTqz/GtrGuXfbyyBniKykOWQWGqwwMA7QiYAxi+IlPdqo+hYHnUt5ZPfnsHJyNiDtnpJyayNBkF6cWoYGAMY92U2hXHF/C1M8uP/ZtYdiuj26UdAdQQSXQErwSOMzt/XWRWAz5GuSBIkwG1H3FabJ2OsUOUhGC6tK4EMtJO0ttC6IBD3kM0ve0tJwMdSfjZo+EEISaeTr9P3wYrGjXqyC1krcKdhMpxEnt5JetoulscpyzhXN5FRpuPHvbeQaKxFAEB6EN+cYN6xD7RYGpXpNndMmZgM5Dcs3YSNFDHUo2LGfZuukSWyUYirJAdYbF3MfqEKmjM+I2EfhA94iG3L7uKrR+GdWD73ydlIB+6hgref1QTlmgmbM3/LeX5GI1Ux1RWpgxpLuZ2+I+IjzZ8wqE4nilvQdkUdfhzI5QDWy+kw5Wgg2pGpeEVeCCA7b85BO3F9DzxB3cdqvBzWcmzbyMiqhzuYqtHRVG2y4x+KOlnyqla8AoWWpuBoYRxzXrfKuILl6SfiWCbjxoZJUaCBj1CjH7GIaDbc9kqBY3W/Rgjda1iqQcOJu2WW+76pZC9QG7M00dffe9hNnseupFL53r8F7YHSwJWUKP2q+k7RdsxyOB11n0xtOvnW4irMMFNV4H0uqwS5ExsmP9AxbDTc9JwgneAT5vTiUSm1E7BSflSt3bfa1tv8Di3R8n3Af7MNWzs49hmauE2wP+ttrq+AsWpFG2awvsuOqbipWHgtuvuaAE+A1Z/7gC9hesnr+7wqCwG8c5yAg3AL1fm8T9AZtp/bbJGwl1pNrE7RuOX7PeMRUERVaPpEs+yqeoSmuOlokqw49pgomjLeh7icHNlG19yjs6XXOMedYm5xH2YxpV2tc0Ro2jJfxC50ApuxGob7lMsxfTbeUv07TyYxpeLucEH1gNd4IKH2LAg5TdVhlCafZvpskfncCfx8pOhJzd76bJWeYFnFciwcYfubRc12Ip/ppIhA1/mSZ/RxjFDrJC5xifFjJpY2Xl5zXdguFqYyTR1zSp1Y9p+tktDYYSNflcxI0iyO4TPBdlRcpeqjK/piF5bklq77VSEaA+z8qmJTFzIWiitbnzR794USKBUaT0NTEsVjZqLaFVqJoPN9ODG70IPbfBHKK+/q/AWR0tJzYHRULOa4MP+W/HfGadZUbfw177G7j/OGbIs8TahLyynl4X4RinF793Oz+BU0saXtUHrVBFT/DnA3ctNPoGbs4hRIjTok8i+algT1lTHi4SxFvONKNrgQFAq2/gFnWMXgwffgYMJpiKYkmW3tTg3ZQ9Jq+f8XN+A5eeUKHWvJWJ2sgJ1Sop+wwhqFVijqWaJhwtD8MNlSBeWNNWTa5Z5kPZw5+LbVT99wqTdx29lMUH4OIG/D86ruKEauBjvH5xy6um/Sfj7ei6UUVk4AIl3MyD4MSSTOFgSwsH/QJWaQ5as7ZcmgBZkzjjU1UrQ74ci1gWBCSGHtuV1H2mhSnO3Wp/3fEV5a+4wz//6qy8JxjZsmxxy5+4w9CDNJY09T072iKG0EnOS0arEYgXqYnXcYHwjTtUNAcMelOd4xpkoqiTYICWFq0JSiPfPDQdnt+4/wuqcXY47QILbgAAAABJRU5ErkJggg==")`
-        }}
-      />
-
-      {/* Aurora Core - Pulsing Center */}
-      <div
-        className="absolute w-96 h-96 rounded-full blur-3xl"
-        style={{
-          background: `radial-gradient(circle, rgba(0, 245, 255, ${auroraOpacity}) 0%, rgba(123, 104, 238, ${auroraOpacity * 0.6}) 50%, transparent 70%)`,
+          background: `radial-gradient(circle, rgba(0, 245, 255, ${auroraOpacity * 0.4}) 0%, rgba(123, 104, 238, ${auroraOpacity * 0.2}) 50%, transparent 70%)`,
           opacity: auroraPulse,
-          transform: `scale(${1 + progress * 0.005})`,
-          transition: 'opacity 0.3s ease-out, transform 0.3s ease-out'
+          transform: `scale(${1 + progress * 0.003})`,
+          transition: 'opacity 0.5s ease-out, transform 0.5s ease-out'
         }}
       />
 
-      {/* Secondary Aurora Ring */}
-      <div
-        className="absolute w-64 h-64 rounded-full blur-2xl"
-        style={{
-          background: `radial-gradient(circle, rgba(74, 144, 226, ${auroraOpacity * 0.8}) 0%, transparent 60%)`,
-          opacity: auroraPulse * 0.7,
-          transform: `scale(${1 + progress * 0.008})`,
-          transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
-          animationDelay: '0.5s'
-        }}
-      />
-
-      {/* Loading Content Container */}
-      <div className="relative z-10 w-full max-w-md mx-auto px-6">
-        {/* Loading Text */}
-        <div className="text-center space-y-8">
-          <h2 className="text-2xl font-semibold" style={{ color: '#f8f9fa' }}>
-            Getting things ready...
+      {/* Loading Content */}
+      <div className="relative z-10 w-full max-w-sm mx-auto px-6">
+        <div className="text-center space-y-6">
+          {/* Simple title */}
+          <h2 className="text-xl font-medium text-soft-white/90">
+            Loading experience
           </h2>
 
-          {/* Aurora Energy Cup */}
+          {/* Elegant progress circle */}
           <div className="flex justify-center">
-            <div className="relative">
-              {/* Steam Effects */}
-              <div className="steam-effect" style={{
-                position: 'absolute',
-                width: '8px',
-                height: '25px',
-                background: 'linear-gradient(to top, rgba(0, 245, 255, 0.8), transparent)',
-                borderRadius: '10px',
-                top: '-35px',
-                left: '15px',
-                animation: 'steam 1.5s linear infinite',
-                animationDelay: '0.2s',
-                filter: 'blur(2px)',
-                opacity: auroraOpacity
-              }} />
-              <div className="steam-effect" style={{
-                position: 'absolute',
-                width: '8px',
-                height: '25px',
-                background: 'linear-gradient(to top, rgba(123, 104, 238, 0.8), transparent)',
-                borderRadius: '10px',
-                top: '-35px',
-                left: '35px',
-                animation: 'steam 1.5s linear infinite',
-                animationDelay: '0.5s',
-                filter: 'blur(2px)',
-                opacity: auroraOpacity
-              }} />
-              <div className="steam-effect" style={{
-                position: 'absolute',
-                width: '8px',
-                height: '25px',
-                background: 'linear-gradient(to top, rgba(74, 144, 226, 0.8), transparent)',
-                borderRadius: '10px',
-                top: '-35px',
-                left: '55px',
-                animation: 'steam 1.5s linear infinite',
-                animationDelay: '0.8s',
-                filter: 'blur(2px)',
-                opacity: auroraOpacity
-              }} />
+            <div className="relative w-24 h-24">
+              {/* Background circle */}
+              <div className="absolute inset-0 rounded-full border-2 border-white/5" />
 
-              {/* Energy Cup */}
-              <div
-                className="cup-container"
-                style={{
-                  position: 'relative',
-                  width: '80px',
-                  height: '70px',
-                  border: '4px solid #00f5ff',
-                  borderTop: '0',
-                  borderRadius: '0 0 20px 20px',
-                  background: `linear-gradient(180deg, #7b68ee 0%, #4a90e2 50%, #00f5ff 100%)`,
-                  backgroundSize: '100% 200%',
-                  backgroundPosition: `0 ${80 - (progress * 0.8)}px`,
-                  boxShadow: `0 0 20px rgba(0, 245, 255, ${auroraOpacity * 0.5})`,
-                  transition: 'background-position 0.1s linear'
-                }}
-              >
-                {/* Cup Handle */}
-                <div
+              {/* Progress arc */}
+              <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
+                  stroke="url(#auroraGradient)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeDasharray={`${progress * 2.83} 283`}
+                  className="transition-all duration-300 ease-out"
                   style={{
-                    position: 'absolute',
-                    right: '-25px',
-                    top: '10px',
-                    width: '25px',
-                    height: '30px',
-                    border: '4px solid #00f5ff',
-                    borderLeft: '0',
-                    borderRadius: '0 15px 15px 0',
-                    boxShadow: '0 0 10px rgba(0, 245, 255, 0.3)'
+                    filter: `drop-shadow(0 0 8px rgba(0, 245, 255, ${auroraOpacity * 0.6}))`
                   }}
                 />
+                <defs>
+                  <linearGradient id="auroraGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#00f5ff" />
+                    <stop offset="50%" stopColor="#7b68ee" />
+                    <stop offset="100%" stopColor="#4a90e2" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              {/* Percentage in center */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-2xl font-semibold" style={{ color: '#00f5ff' }}>
+                  {Math.round(progress)}%
+                </span>
               </div>
             </div>
           </div>
 
-          {/* Progress Bar */}
-          <div className="relative">
-            <div className="h-1 rounded-full overflow-hidden" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
-              <div
-                className="h-full rounded-full transition-all duration-300 ease-out"
-                style={{
-                  width: `${progress}%`,
-                  background: `linear-gradient(90deg, #00f5ff 0%, #7b68ee 50%, #4a90e2 100%)`,
-                  boxShadow: `0 0 10px rgba(0, 245, 255, ${auroraOpacity * 0.8})`
-                }}
-              />
-            </div>
-
-            {/* Progress Messages */}
-            <div className="flex justify-between mt-3 items-center">
-              <span className="text-sm transition-all duration-300" style={{ color: '#8fa3bf' }}>
-                {progress < 20 && 'Warming up...'}
-                {progress >= 20 && progress < 40 && 'Picking some colors...'}
-                {progress >= 40 && progress < 60 && 'Setting things up...'}
-                {progress >= 60 && progress < 80 && 'Adding a little magic...'}
-                {progress >= 80 && progress < 100 && 'Almost there... ✨'}
-                {progress >= 100 && 'Welcome! ♡'}
-              </span>
-              <span className="text-sm font-semibold" style={{ color: '#00f5ff' }}>
-                {Math.round(progress)}%
-              </span>
-            </div>
+          {/* Status message */}
+          <div className="h-6">
+            <span className="text-sm text-gray-400 transition-all duration-300">
+              {progress < 25 && 'Initializing...'}
+              {progress >= 25 && progress < 50 && 'Loading assets...'}
+              {progress >= 50 && progress < 75 && 'Preparing components...'}
+              {progress >= 75 && progress < 100 && 'Almost ready...'}
+              {progress >= 100 && 'Welcome! ✨'}
+            </span>
           </div>
         </div>
-      </div>
-
-      {/* Ambient Light Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Top ambient */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1/3 blur-3xl"
-          style={{
-            background: `radial-gradient(ellipse at center, rgba(0, 245, 255, ${auroraOpacity * 0.3}) 0%, transparent 70%)`,
-            transition: 'opacity 0.3s ease-out'
-          }}
-        />
-
-        {/* Bottom ambient */}
-        <div
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-1/3 blur-3xl"
-          style={{
-            background: `radial-gradient(ellipse at center, rgba(123, 104, 238, ${auroraOpacity * 0.2}) 0%, transparent 70%)`,
-            transition: 'opacity 0.3s ease-out'
-          }}
-        />
       </div>
     </div>
   );
