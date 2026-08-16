@@ -5,9 +5,10 @@ import avatar from '/assets/avatar.jpg';
 interface NavigationProps {
   currentSection: Section;
   sections: Section[];
+  isLoading?: boolean;
 }
 
-export const Navigation = ({ currentSection, sections }: NavigationProps) => {
+export const Navigation = ({ currentSection, sections, isLoading = false }: NavigationProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -65,7 +66,7 @@ export const Navigation = ({ currentSection, sections }: NavigationProps) => {
         isScrolled
           ? 'bg-midnight/90 backdrop-blur-md border-b border-sky-blue/20 shadow-lg'
           : 'bg-midnight/80 backdrop-blur-sm'
-      }`}>
+      } ${isLoading ? 'opacity-0 -translate-y-4' : 'opacity-100 translate-y-0'} transition-all duration-1000 ease-out`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             {/* Logo/Avatar */}

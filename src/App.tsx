@@ -57,17 +57,12 @@ function App() {
         <AdvancedAuroraBackground />
       </div>
 
-      {/* Navigation - z-index 60 (above music player) */}
-      <div
-        className={`relative z-[60] transition-all duration-1000 ease-out delay-100 ${
-          isLoading ? 'opacity-0 -translate-y-4' : 'opacity-100 translate-y-0'
-        }`}
-      >
-        <Navigation
-          currentSection={currentSection}
-          sections={sections}
-        />
-      </div>
+      {/* Navigation - directly rendered to maintain fixed positioning */}
+      <Navigation
+        currentSection={currentSection}
+        sections={sections}
+        isLoading={isLoading}
+      />
 
       {/* Main Content - z-index 20 (above background and snow) */}
       <main

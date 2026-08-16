@@ -68,11 +68,11 @@ export const FloatingMusicPlayer = () => {
   };
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50">
-      <div className="glass-panel p-3 sm:p-4 rounded-xl border border-aurora/30 hover:border-aurora/50 transition-all duration-300 hover:scale-105">
-        <div className="flex flex-col gap-2">
-          {/* Main player row */}
-          <div className="flex items-center gap-3">
+    <div className="fixed bottom-0 left-0 right-0 z-40 bg-midnight/90 backdrop-blur-md border-t border-sky-blue/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="flex items-center justify-between gap-4 py-3">
+          {/* Left side - Controls and Song Info */}
+          <div className="flex items-center gap-4 flex-shrink-0">
             {/* Play/Pause Button */}
             <button
               onClick={togglePlay}
@@ -91,26 +91,18 @@ export const FloatingMusicPlayer = () => {
             </button>
 
             {/* Song Info */}
-            <div className="text-left flex-shrink-0 min-w-0">
+            <div className="text-left hidden sm:block">
               <div className="text-sm sm:text-base font-medium text-soft-white truncate">unlasting</div>
               <div className="text-xs text-gray-400 truncate">LiSA • Sword Art Online</div>
             </div>
           </div>
 
-          {/* Progress bar row */}
-          <div className="h-1 bg-midnight/50 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-aurora to-sky-blue transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-
-          {/* Waveform Animation */}
-          <div className="flex items-end gap-1 h-6 justify-center">
-            {[...Array(12)].map((_, i) => (
+          {/* Center - Waveform Animation */}
+          <div className="flex items-end gap-1 h-8 flex-1 justify-center max-w-md">
+            {[...Array(20)].map((_, i) => (
               <div
                 key={i}
-                className="w-1 bg-aurora/60 rounded-full transition-all duration-150 ease-out"
+                className="w-1 sm:w-1.5 bg-aurora/60 rounded-full transition-all duration-150 ease-out"
                 style={{
                   height: isPlaying ? `${30 + Math.random() * 70}%` : '20%',
                   transitionDuration: `${100 + Math.random() * 150}ms`,
@@ -118,24 +110,37 @@ export const FloatingMusicPlayer = () => {
               />
             ))}
           </div>
-        </div>
 
-        {/* Audio Element */}
-        <audio
-          ref={audioRef}
-          src={unlastingMp3}
-          loop
-          preload="auto"
-          onError={() => console.log('Audio loading error')}
-          onCanPlayThrough={() => {
-            // Try to play when audio is ready
-            const audio = audioRef.current;
-            if (audio && isPlaying) {
-              audio.play().catch(err => console.log('Auto-play prevented:', err));
-            }
-          }}
-        />
+          {/* Right - Progress bar */}
+          <div className="flex items-center gap-3 flex-shrink-0 w-32 sm:w-48">
+            <div className="h-1 bg-midnight/50 rounded-full overflow-hidden flex-1">
+              <div
+                className="h-full bg-gradient-to-r from-aurora to-sky-blue transition-all duration-300"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <div className="text-xs text-aurora font-medium w-8 text-right">
+              {Math.round(progress)}%
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Audio Element */}
+      <audio
+        ref={audioRef}
+        src={unlastingMp3}
+        loop
+        preload="auto"
+        onError={() => console.log('Audio loading error')}
+        onCanPlayThrough={() => {
+          // Try to play when audio is ready
+          const audio = audioRef.current;
+          if (audio && isPlaying) {
+            audio.play().catch(err => console.log('Auto-play prevented:', err));
+          }
+        }}
+      />
     </div>
   );
 };
