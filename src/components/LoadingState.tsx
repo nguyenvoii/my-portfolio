@@ -127,48 +127,6 @@ export const LoadingState = ({ onComplete }: LoadingStateProps) => {
 
       {/* Loading Content Container */}
       <div className="relative z-10 w-full max-w-md mx-auto px-6">
-        {/* Aurora Spinner */}
-        <div className="flex justify-center mb-12">
-          <div className="relative">
-            {/* Outer Ring */}
-            <div
-              className="w-24 h-24 border-4 border-transparent rounded-full animate-spin"
-              style={{
-                borderTopColor: `rgba(0, 245, 255, ${0.3 + progress * 0.005})`,
-                borderRightColor: `rgba(123, 104, 238, ${0.2 + progress * 0.004})`,
-                transition: 'border-color 0.3s ease-out'
-              }}
-            />
-
-            {/* Inner Ring */}
-            <div
-              className="absolute inset-2 w-20 h-20 border-3 border-transparent rounded-full animate-spin"
-              style={{
-                animationDirection: 'reverse',
-                borderBottomColor: `rgba(74, 144, 226, ${0.4 + progress * 0.006})`,
-                borderLeftColor: `rgba(0, 245, 255, ${0.3 + progress * 0.005})`,
-                transition: 'border-color 0.3s ease-out'
-              }}
-            />
-
-            {/* Core */}
-            <div
-              className="absolute inset-0 flex items-center justify-center"
-              style={{
-                opacity: 0.5 + progress * 0.005
-              }}
-            >
-              <div
-                className="w-2 h-2 rounded-full"
-                style={{
-                  background: `radial-gradient(circle, #00f5ff 0%, #7b68ee 100%)`,
-                  boxShadow: `0 0 20px rgba(0, 245, 255, ${auroraOpacity}), 0 0 40px rgba(123, 104, 238, ${auroraOpacity * 0.6})`
-                }}
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Loading Text */}
         <div className="text-center space-y-8">
           <h2 className="text-2xl font-semibold" style={{ color: '#f8f9fa' }}>
