@@ -24,15 +24,15 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
   if (!isOpen) return null;
 
   const images = [
-    '/projects/dashboard.png',
-    '/projects/room-list.png',
-    '/projects/booking-form.png',
-    '/projects/customer-list.png',
-    '/projects/room-detail.png',
-    '/projects/khachvanglai.png',
-    '/projects/nhatkyhethong.png',
-    '/projects/quanlynhanvien.png',
-    '/projects/voucher.png',
+    import.meta.env.BASE_URL + 'projects/dashboard.png',
+    import.meta.env.BASE_URL + 'projects/room-list.png',
+    import.meta.env.BASE_URL + 'projects/booking-form.png',
+    import.meta.env.BASE_URL + 'projects/customer-list.png',
+    import.meta.env.BASE_URL + 'projects/room-detail.png',
+    import.meta.env.BASE_URL + 'projects/khachvanglai.png',
+    import.meta.env.BASE_URL + 'projects/nhatkyhethong.png',
+    import.meta.env.BASE_URL + 'projects/quanlynhanvien.png',
+    import.meta.env.BASE_URL + 'projects/voucher.png',
   ];
 
   const nextImage = () => setCurrentImage((prev) => (prev + 1) % images.length);
@@ -72,12 +72,16 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
             <div className="space-y-6">
               {/* Project Card */}
               <div className="glass-panel p-6 border border-aurora/20">
-                {/* Project Image */}
-                <div className="aspect-video mb-6 bg-midnight/50 rounded-lg overflow-hidden">
+                {/* Project Image - Use natural aspect ratio for landscape screenshots */}
+                <div className="aspect-[16/9] mb-6 bg-midnight/50 rounded-lg overflow-hidden">
                   <img
-                    src={project.image || '/projects/dashboard.png'}
+                    src={project.image || import.meta.env.BASE_URL + 'projects/dashboard.png'}
                     alt={project.title}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      console.log('Image load error:', e.currentTarget.src);
+                      e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="225"%3E%3Crect fill="%231a1a2e" width="400" height="225"/%3E%3Ctext fill="%2300f5ff" x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-size="16"%3EImage Not Available%3C/text%3E%3C/svg%3E';
+                    }}
                   />
                 </div>
 
@@ -119,11 +123,18 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
                     <button
                       key={index}
                       onClick={() => setCurrentImage(index)}
-                      className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                      className={`aspect-[16/9] rounded-lg overflow-hidden border-2 transition-all ${
                         currentImage === index ? 'border-aurora' : 'border-transparent hover:border-aurora/50'
                       }`}
                     >
-                      <img src={img} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
+                      <img
+                        src={img}
+                        alt={`Gallery ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="160" height="90"%3E%3Crect fill="%231a1a2e" width="160" height="90"/%3E%3C/svg%3E';
+                        }}
+                      />
                     </button>
                   ))}
                 </div>
@@ -134,12 +145,16 @@ export const ProjectModal = ({ isOpen, onClose, project }: ProjectModalProps) =>
           {/* Right Side - Detailed Description */}
           <div className="lg:w-3/5 p-6 md:p-8 overflow-y-auto max-h-[90vh]">
             <div className="space-y-8">
-              {/* Large Image Viewer */}
-              <div className="relative aspect-video bg-midnight/50 rounded-xl overflow-hidden border border-aurora/20">
+              {/* Large Image Viewer - Landscape aspect ratio */}
+              <div className="relative aspect-[16/9] bg-midnight/50 rounded-xl overflow-hidden border border-aurora/20">
                 <img
                   src={images[currentImage]}
                   alt={`${project.title} - Screenshot ${currentImage + 1}`}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.log('Gallery image error:', e.currentTarget.src);
+                    e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="1600" height="900"%3E%3Crect fill="%231a1a2e" width="1600" height="900"/%3E%3Ctext fill="%2300f5ff" x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-size="24"%3EImage Not Available%3C/text%3E%3C/svg%3E';
+                  }}
                 />
 
                 {/* Gallery Controls Overlay */}
