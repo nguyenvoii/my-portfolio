@@ -141,21 +141,21 @@ export const Navigation = ({ currentSection, sections, isLoading = false }: Navi
   return (
     <>
       {/* Mobile bottom navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-midnight/95 backdrop-blur-lg border-t border-sky-blue/20">
-        <div className="flex items-center justify-around h-16 px-2">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-midnight/95 backdrop-blur-lg border-t border-sky-blue/20 pb-safe">
+        <div className="flex items-center justify-around h-14 sm:h-16 px-1 sm:px-2">
           {sections.map((section) => (
             <button
               key={section}
               onClick={() => scrollToSection(section)}
-              className="flex flex-col items-center justify-center gap-1 px-2 py-1 transition-all duration-300 hover:scale-105 relative"
+              className="flex flex-col items-center justify-center gap-0.5 sm:gap-1 px-1 sm:px-2 py-1 transition-all duration-300 hover:scale-105 relative"
               aria-label={`Navigate to ${sectionLabels[section]}`}
             >
-              <div className={`text-lg transition-colors duration-300 ${
+              <div className={`text-base sm:text-lg transition-colors duration-300 ${
                 currentSection === section ? 'text-aurora scale-110' : 'text-muted-blue'
               }`}>
                 {sectionIcons[section]}
               </div>
-              <span className={`text-[10px] font-medium transition-colors duration-300 ${
+              <span className={`text-[8px] sm:text-[10px] font-medium transition-colors duration-300 ${
                 currentSection === section ? 'text-aurora' : 'text-muted-blue'
               }`}>
                 {sectionLabels[section]}
@@ -163,7 +163,7 @@ export const Navigation = ({ currentSection, sections, isLoading = false }: Navi
 
               {/* Active indicator */}
               {currentSection === section && (
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-aurora rounded-full animate-pulse-soft" />
+                <div className="absolute -top-0.5 sm:-top-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-aurora rounded-full animate-pulse-soft" />
               )}
             </button>
           ))}
@@ -172,21 +172,21 @@ export const Navigation = ({ currentSection, sections, isLoading = false }: Navi
 
       {/* Mobile top bar */}
       <div className="fixed top-0 left-0 right-0 z-40 bg-midnight/90 backdrop-blur-md border-b border-sky-blue/20">
-        <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center justify-between px-3 sm:px-4 py-2 sm:py-3">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full overflow-hidden border-2 border-aurora/50">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border-2 border-aurora/50">
               <img
                 src={avatar}
                 alt="Nguyễn Voi Avatar"
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className="text-sm font-semibold text-soft-white">Voi</span>
+            <span className="text-sm sm:text-base font-semibold text-soft-white">Voi</span>
           </div>
 
           {/* Current section indicator */}
-          <div className="text-xs text-muted-blue">
+          <div className="text-[10px] sm:text-xs text-muted-blue">
             {sectionLabels[currentSection]}
           </div>
         </div>

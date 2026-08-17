@@ -56,6 +56,13 @@
       scroll-behavior: auto !important;
     }
   }
+
+  /* Mobile safe area support */
+  @supports (padding: max(0px)) {
+    .pb-safe {
+      padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
+  }
 }
 
 @layer components {

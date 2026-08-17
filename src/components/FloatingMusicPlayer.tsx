@@ -49,30 +49,30 @@ export const FloatingMusicPlayer = () => {
   const togglePlay = () => setIsPlaying(!isPlaying);
 
   return (
-    <div className="fixed bottom-4 right-4 z-40">
-      <div className="glass-panel px-6 py-3 rounded-xl border border-aurora/20 hover:border-aurora/40 transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-md">
-        <div className="flex items-center gap-4">
+    <div className="fixed bottom-20 sm:bottom-4 right-2 sm:right-4 z-40">
+      <div className="glass-panel px-3 sm:px-4 md:px-6 py-2 sm:py-3 rounded-lg sm:rounded-xl border border-aurora/20 hover:border-aurora/40 transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-md max-w-[200px] sm:max-w-none">
+        <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
           <button
             onClick={togglePlay}
-            className="w-10 h-10 rounded-lg bg-aurora/15 border border-aurora/30 flex items-center justify-center hover:bg-aurora/25 hover:border-aurora/50 transition-all duration-300 flex-shrink-0"
+            className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg bg-aurora/15 border border-aurora/30 flex items-center justify-center hover:bg-aurora/25 hover:border-aurora/50 transition-all duration-300 flex-shrink-0"
           >
             {isPlaying ? (
-              <svg className="w-4 h-4 text-aurora" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 text-aurora" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
               </svg>
             ) : (
-              <svg className="w-4 h-4 text-aurora ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-3 h-3 sm:w-4 sm:h-4 text-aurora ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
             )}
           </button>
 
           <div className="text-left min-w-0">
-            <div className="text-xs font-medium text-soft-white truncate leading-tight">unlasting</div>
-            <div className="text-[10px] text-gray-400 truncate leading-tight">LiSA • SAO</div>
+            <div className="text-[10px] sm:text-xs font-medium text-soft-white truncate leading-tight">unlasting</div>
+            <div className="text-[8px] sm:text-[10px] text-gray-400 truncate leading-tight">LiSA • SAO</div>
           </div>
 
-          <div className="flex items-end gap-1 h-6">
+          <div className="hidden sm:flex items-end gap-1 h-4 sm:h-5 md:h-6">
             {bars.map((bar, i) => (
               <div
                 key={i}
